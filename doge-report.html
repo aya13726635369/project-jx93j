@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DOGE-USDT 合约行情报告</title>
+    <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
     <style>
         * {
             margin: 0;
@@ -20,19 +21,19 @@
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
         }
 
         header {
             text-align: center;
-            padding: 30px 0;
+            padding: 20px 0;
             border-bottom: 2px solid rgba(255,255,255,0.1);
-            margin-bottom: 30px;
+            margin-bottom: 20px;
         }
 
         h1 {
-            font-size: 2rem;
+            font-size: 1.8rem;
             background: linear-gradient(90deg, #00d2ff, #3a7bd5);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -41,88 +42,156 @@
 
         .update-time {
             color: #888;
-            margin-top: 10px;
-            font-size: 0.9rem;
+            margin-top: 8px;
+            font-size: 0.85rem;
         }
 
-        .price-section {
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            padding: 12px 24px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: #fff;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .tab-btn:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, #00d2ff, #3a7bd5);
+            border-color: transparent;
+        }
+
+        .price-header {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
         }
 
-        .card {
+        .price-card {
             background: rgba(255,255,255,0.05);
-            border-radius: 16px;
-            padding: 24px;
+            border-radius: 12px;
+            padding: 20px;
             border: 1px solid rgba(255,255,255,0.1);
         }
 
-        .card-title {
-            font-size: 1rem;
+        .price-label {
+            font-size: 0.85rem;
             color: #888;
-            margin-bottom: 15px;
+            margin-bottom: 5px;
         }
 
-        .price {
-            font-size: 2.5rem;
+        .price-value {
+            font-size: 1.8rem;
             font-weight: bold;
-            color: #00d2ff;
         }
 
         .price-up { color: #00ff88; }
         .price-down { color: #ff4757; }
 
-        .change {
-            font-size: 1.2rem;
-            margin-top: 5px;
+        .chart-container {
+            background: rgba(255,255,255,0.03);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255,255,255,0.1);
         }
 
-        .info-grid {
+        #chart {
+            width: 100%;
+            height: 500px;
+        }
+
+        .boll-info {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 15px;
-            margin-top: 15px;
+            margin-bottom: 20px;
         }
 
-        .info-item {
+        .boll-card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .boll-title {
+            font-size: 1rem;
+            color: #00d2ff;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .boll-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        .boll-item {
+            text-align: center;
+            padding: 10px;
             background: rgba(0,0,0,0.2);
-            padding: 12px;
             border-radius: 8px;
         }
 
-        .info-label {
-            font-size: 0.8rem;
+        .boll-item-label {
+            font-size: 0.75rem;
             color: #888;
         }
 
-        .info-value {
-            font-size: 1.1rem;
+        .boll-item-value {
+            font-size: 1rem;
             font-weight: bold;
             margin-top: 5px;
         }
 
-        .kline-section {
-            background: rgba(255,255,255,0.05);
-            border-radius: 16px;
-            padding: 24px;
-            margin-bottom: 30px;
+        .status-tag {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            margin-top: 10px;
         }
 
-        .kline-section h2 {
-            margin-bottom: 20px;
+        .status-normal { background: rgba(0,210,255,0.2); color: #00d2ff; }
+        .status-near { background: rgba(255,200,0,0.2); color: #ffc800; }
+        .status-touch { background: rgba(255,71,87,0.2); color: #ff4757; }
+
+        .kline-table-section {
+            background: rgba(255,255,255,0.03);
+            border-radius: 16px;
+            padding: 20px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .kline-table-section h2 {
+            margin-bottom: 15px;
             color: #00d2ff;
         }
 
         .kline-table {
             width: 100%;
             border-collapse: collapse;
+            font-size: 0.9rem;
         }
 
         .kline-table th,
         .kline-table td {
-            padding: 12px;
+            padding: 10px 8px;
             text-align: center;
             border-bottom: 1px solid rgba(255,255,255,0.1);
         }
@@ -144,12 +213,28 @@
             text-align: center;
             padding: 20px;
             color: #666;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
+        }
+
+        .refresh-btn {
+            margin-left: 20px;
+            padding: 8px 16px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: #fff;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+        }
+
+        .refresh-btn:hover {
+            background: rgba(255,255,255,0.2);
         }
 
         @media (max-width: 768px) {
-            .price { font-size: 2rem; }
-            .info-grid { grid-template-columns: 1fr; }
+            #chart { height: 350px; }
+            .price-value { font-size: 1.4rem; }
+            .boll-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -157,80 +242,81 @@
     <div class="container">
         <header>
             <h1>🐕 DOGE-USDT 合约行情报告</h1>
-            <div class="update-time">更新时间: 2026-03-18 10:00:00</div>
+            <div class="update-time">
+                更新时间: <span id="updateTime">2026-03-18 10:00:00</span>
+                <button class="refresh-btn" onclick="location.reload()">🔄 刷新</button>
+            </div>
         </header>
 
-        <div class="price-section">
-            <div class="card">
-                <div class="card-title">当前价格 (USDT)</div>
-                <div class="price price-up">0.09948</div>
-                <div class="change green">▲ +0.58% (24h)</div>
-                <div class="info-grid">
-                    <div class="info-item">
-                        <div class="info-label">24h 最高</div>
-                        <div class="info-value">0.10356</div>
-                    </div>
-                    <div class="info-item">
-                        <div class="info-label">24h 最低</div>
-                        <div class="info-value">0.09436</div>
-                    </div>
-                    <div class="info-item">
-                        <div class="info-label">24h 成交量</div>
-                        <div class="info-value">920万</div>
-                    </div>
-                    <div class="info-item">
-                        <div class="info-label">24h 成交额</div>
-                        <div class="info-value">9346万</div>
-                    </div>
-                </div>
+        <div class="price-header">
+            <div class="price-card">
+                <div class="price-label">当前价格 (USDT)</div>
+                <div class="price-value price-up" id="currentPrice">0.09948</div>
             </div>
-
-            <div class="card">
-                <div class="card-title">布林带分析 (H1)</div>
-                <div class="info-grid">
-                    <div class="info-item">
-                        <div class="info-label">上轨</div>
-                        <div class="info-value" style="color: #ff4757;">0.10140</div>
-                    </div>
-                    <div class="info-item">
-                        <div class="info-label">中轨 MA20</div>
-                        <div class="info-value">0.10019</div>
-                    </div>
-                    <div class="info-item">
-                        <div class="info-label">下轨</div>
-                        <div class="info-value" style="color: #00ff88;">0.09898</div>
-                    </div>
-                    <div class="info-item">
-                        <div class="info-label">位置</div>
-                        <div class="info-value">中轨下方</div>
-                    </div>
-                </div>
+            <div class="price-card">
+                <div class="price-label">24h 涨跌幅</div>
+                <div class="price-value green" id="change24h">+0.58%</div>
             </div>
-
-            <div class="card">
-                <div class="card-title">布林带分析 (H4)</div>
-                <div class="info-grid">
-                    <div class="info-item">
-                        <div class="info-label">上轨</div>
-                        <div class="info-value" style="color: #ff4757;">0.10393</div>
-                    </div>
-                    <div class="info-item">
-                        <div class="info-label">中轨 MA20</div>
-                        <div class="info-value">0.09901</div>
-                    </div>
-                    <div class="info-item">
-                        <div class="info-label">下轨</div>
-                        <div class="info-value" style="color: #00ff88;">0.09408</div>
-                    </div>
-                    <div class="info-item">
-                        <div class="info-label">位置</div>
-                        <div class="info-value">中轨附近</div>
-                    </div>
-                </div>
+            <div class="price-card">
+                <div class="price-label">24h 最高</div>
+                <div class="price-value" id="high24h">0.10356</div>
+            </div>
+            <div class="price-card">
+                <div class="price-label">24h 最低</div>
+                <div class="price-value" id="low24h">0.09436</div>
             </div>
         </div>
 
-        <div class="kline-section">
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchPeriod('H1')">📈 H1 (1小时)</button>
+            <button class="tab-btn" onclick="switchPeriod('H4')">📊 H4 (4小时)</button>
+            <button class="tab-btn" onclick="switchPeriod('1D')">📅 日线</button>
+        </div>
+
+        <div class="chart-container">
+            <div id="chart"></div>
+        </div>
+
+        <div class="boll-info">
+            <div class="boll-card">
+                <div class="boll-title">布林带分析 (H1)</div>
+                <div class="boll-grid">
+                    <div class="boll-item">
+                        <div class="boll-item-label">上轨</div>
+                        <div class="boll-item-value red">0.10140</div>
+                    </div>
+                    <div class="boll-item">
+                        <div class="boll-item-label">中轨</div>
+                        <div class="boll-item-value">0.10019</div>
+                    </div>
+                    <div class="boll-item">
+                        <div class="boll-item-label">下轨</div>
+                        <div class="boll-item-value green">0.09898</div>
+                    </div>
+                </div>
+                <div class="status-tag status-normal" id="h1Status">中轨下方运行</div>
+            </div>
+            <div class="boll-card">
+                <div class="boll-title">布林带分析 (H4)</div>
+                <div class="boll-grid">
+                    <div class="boll-item">
+                        <div class="boll-item-label">上轨</div>
+                        <div class="boll-item-value red">0.10393</div>
+                    </div>
+                    <div class="boll-item">
+                        <div class="boll-item-label">中轨</div>
+                        <div class="boll-item-value">0.09901</div>
+                    </div>
+                    <div class="boll-item">
+                        <div class="boll-item-label">下轨</div>
+                        <div class="boll-item-value green">0.09408</div>
+                    </div>
+                </div>
+                <div class="status-tag status-normal" id="h4Status">中轨附近运行</div>
+            </div>
+        </div>
+
+        <div class="kline-table-section">
             <h2>📊 最近 K 线数据</h2>
             <table class="kline-table">
                 <thead>
@@ -243,17 +329,7 @@
                         <th>涨跌幅</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr><td>10:00</td><td>0.0989</td><td class="green">0.09975</td><td>0.09825</td><td class="green">0.09948</td><td class="green">+0.58%</td></tr>
-                    <tr><td>09:00</td><td>0.09877</td><td class="green">0.09968</td><td>0.09833</td><td class="green">0.0989</td><td class="green">+0.13%</td></tr>
-                    <tr><td>08:00</td><td>0.10008</td><td>0.10017</td><td class="red">0.09864</td><td class="red">0.09878</td><td class="red">-1.30%</td></tr>
-                    <tr><td>07:00</td><td>0.10013</td><td class="green">0.10047</td><td>0.0999</td><td class="red">0.10009</td><td class="red">-0.04%</td></tr>
-                    <tr><td>06:00</td><td>0.10069</td><td>0.10072</td><td class="red">0.09986</td><td class="red">0.10013</td><td class="red">-0.56%</td></tr>
-                    <tr><td>05:00</td><td>0.1008</td><td class="green">0.10124</td><td>0.10028</td><td class="red">0.1007</td><td class="red">-0.10%</td></tr>
-                    <tr><td>04:00</td><td>0.10051</td><td class="green">0.10139</td><td>0.10035</td><td class="green">0.10079</td><td class="green">+0.28%</td></tr>
-                    <tr><td>03:00</td><td>0.10003</td><td class="green">0.1011</td><td>0.09996</td><td class="green">0.10051</td><td class="green">+0.48%</td></tr>
-                    <tr><td>02:00</td><td>0.09994</td><td>0.10054</td><td class="red">0.09953</td><td class="green">0.10003</td><td class="green">+0.09%</td></tr>
-                    <tr><td>01:00</td><td>0.10048</td><td>0.10067</td><td class="red">0.0994</td><td class="red">0.09994</td><td class="red">-0.54%</td></tr>
+                <tbody id="klineTable">
                 </tbody>
             </table>
         </div>
@@ -262,5 +338,124 @@
             <p>📈 数据来源: OKX API | 由 WorkBuddy 自动生成</p>
         </footer>
     </div>
+
+    <script src="kline-data.js"></script>
+    <script>
+        // 初始化图表
+        const chart = LightweightCharts.createChart(document.getElementById('chart'), {
+            layout: {
+                background: { type: 'solid', color: 'transparent' },
+                textColor: '#ddd',
+            },
+            grid: {
+                vertLines: { color: 'rgba(255,255,255,0.1)' },
+                horzLines: { color: 'rgba(255,255,255,0.1)' },
+            },
+            crosshair: {
+                mode: LightweightCharts.CrosshairMode.Normal,
+            },
+            rightPriceScale: {
+                borderColor: 'rgba(255,255,255,0.2)',
+            },
+            timeScale: {
+                borderColor: 'rgba(255,255,255,0.2)',
+                timeVisible: true,
+            },
+        });
+
+        // 添加K线系列
+        const candleSeries = chart.addCandlestickSeries({
+            upColor: '#00ff88',
+            downColor: '#ff4757',
+            borderUpColor: '#00ff88',
+            borderDownColor: '#ff4757',
+            wickUpColor: '#00ff88',
+            wickDownColor: '#ff4757',
+        });
+
+        let currentPeriod = 'H1';
+
+        // 切换周期
+        function switchPeriod(period) {
+            currentPeriod = period;
+            
+            // 更新按钮状态
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // 更新图表数据
+            if (klineData[period]) {
+                candleSeries.setData(klineData[period]);
+                chart.timeScale().fitContent();
+            }
+            
+            // 更新K线表格
+            updateKlineTable(period);
+        }
+
+        // 更新K线表格
+        function updateKlineTable(period) {
+            const data = klineData[period] || [];
+            const tbody = document.getElementById('klineTable');
+            tbody.innerHTML = '';
+            
+            const recentData = data.slice(-15).reverse();
+            
+            recentData.forEach((item, index) => {
+                const date = new Date(item.time * 1000);
+                const timeStr = period === '1D' 
+                    ? date.toLocaleDateString('zh-CN')
+                    : `${date.getHours().toString().padStart(2, '0')}:00`;
+                
+                const prev = data[data.length - 15 + index - 1];
+                let change = 0;
+                if (prev && index < recentData.length - 1) {
+                    change = ((item.close - prev.close) / prev.close * 100);
+                }
+                
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${timeStr}</td>
+                    <td>${item.open.toFixed(5)}</td>
+                    <td class="green">${item.high.toFixed(5)}</td>
+                    <td class="red">${item.low.toFixed(5)}</td>
+                    <td>${item.close.toFixed(5)}</td>
+                    <td class="${change >= 0 ? 'green' : 'red'}">${change >= 0 ? '+' : ''}${change.toFixed(2)}%</td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        // 页面加载完成后初始化
+        window.addEventListener('load', function() {
+            // 更新最新价格
+            const h1Data = klineData['H1'] || [];
+            if (h1Data.length > 0) {
+                const latest = h1Data[h1Data.length - 1];
+                document.getElementById('currentPrice').textContent = latest.close.toFixed(5);
+                
+                const first = h1Data[0];
+                const change = ((latest.close - first.open) / first.open * 100);
+                const changeEl = document.getElementById('change24h');
+                changeEl.textContent = (change >= 0 ? '+' : '') + change.toFixed(2) + '%';
+                changeEl.className = 'price-value ' + (change >= 0 ? 'green' : 'red');
+            }
+            
+            // 设置K线数据
+            candleSeries.setData(klineData['H1']);
+            chart.timeScale().fitContent();
+            
+            // 更新表格
+            updateKlineTable('H1');
+            
+            // 更新时间
+            document.getElementById('updateTime').textContent = new Date().toLocaleString('zh-CN');
+        });
+
+        // 窗口大小变化时调整图表
+        window.addEventListener('resize', function() {
+            chart.resize(document.getElementById('chart').clientWidth, 500);
+        });
+    </script>
 </body>
 </html>
