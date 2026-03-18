@@ -341,21 +341,26 @@
 
     <script src="kline-data.js"></script>
     <script>
-        let chart, candleSeries;
+        let chart, candleSeries, bollUpperSeries, bollMiddleSeries, bollLowerSeries;
         let currentPeriod = 'H1';
 
         // 计算布林带
         function calcBollinger(data, period = 20, mult = 2) {
             if (data.length < period) return null;
-            const recent = data.slice(-period);
-            const ma = recent.reduce((sum, d) => sum + d.close, 0) / period;
-            const variance = recent.reduce((sum, d) => sum + Math.pow(d.close - ma, 2), 0) / period;
-            const std = Math.sqrt(variance);
-            return {
-                upper: ma + mult * std,
-                middle: ma,
-                lower: ma - mult * std
-            };
+            const result = [];
+            for (let i = period - 1; i < data.length; i++) {
+                const slice = data.slice(i - period + 1, i + 1);
+                const ma = slice.reduce((sum, d) => sum + d.close, 0) / period;
+                const variance = slice.reduce((sum, d) => sum + Math.pow(d.close - ma, 2), 0) / period;
+                const std = Math.sqrt(variance);
+                result.push({
+                    time: data[i].time,
+                    upper: ma + mult * std,
+                    middle: ma,
+                    lower: ma - mult * std
+                });
+            }
+            return result;
         }
 
         // 初始化图表
@@ -389,6 +394,27 @@
                 wickUpColor: '#00ff88',
                 wickDownColor: '#ff4757',
             });
+
+            // 添加布林带线条
+            bollUpperSeries = chart.addLineSeries({
+                color: 'rgba(255, 71, 87, 0.8)',
+                lineWidth: 1,
+                lineStyle: LightweightCharts.LineStyle.Dashed,
+                title: 'Boll Upper'
+            });
+            
+            bollMiddleSeries = chart.addLineSeries({
+                color: 'rgba(255, 200, 0, 0.8)',
+                lineWidth: 1,
+                title: 'Boll Middle'
+            });
+            
+            bollLowerSeries = chart.addLineSeries({
+                color: 'rgba(0, 210, 255, 0.8)',
+                lineWidth: 1,
+                lineStyle: LightweightCharts.LineStyle.Dashed,
+                title: 'Boll Lower'
+            });
         }
 
         // 切换周期
@@ -406,6 +432,15 @@
             // 更新图表数据
             if (klineData[period] && candleSeries) {
                 candleSeries.setData(klineData[period]);
+                
+                // 计算并更新布林带
+                const bollData = calcBollinger(klineData[period]);
+                if (bollData) {
+                    bollUpperSeries.setData(bollData.map(d => ({ time: d.time, value: d.upper })));
+                    bollMiddleSeries.setData(bollData.map(d => ({ time: d.time, value: d.middle })));
+                    bollLowerSeries.setData(bollData.map(d => ({ time: d.time, value: d.lower })));
+                }
+                
                 chart.timeScale().fitContent();
             }
             
@@ -533,6 +568,15 @@
             // 设置K线数据
             if (klineData['H1']) {
                 candleSeries.setData(klineData['H1']);
+                
+                // 计算并显示布林带
+                const bollData = calcBollinger(klineData['H1']);
+                if (bollData) {
+                    bollUpperSeries.setData(bollData.map(d => ({ time: d.time, value: d.upper })));
+                    bollMiddleSeries.setData(bollData.map(d => ({ time: d.time, value: d.middle })));
+                    bollLowerSeries.setData(bollData.map(d => ({ time: d.time, value: d.lower })));
+                }
+                
                 chart.timeScale().fitContent();
             }
             
