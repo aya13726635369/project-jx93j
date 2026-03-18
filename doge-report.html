@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DOGE-USDT 合约行情报告</title>
-    <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
+    <script src="https://unpkg.com/lightweight-charts@4.1.0/dist/lightweight-charts.standalone.production.js"></script>
     <style>
         * {
             margin: 0;
@@ -243,7 +243,7 @@
         <header>
             <h1>🐕 DOGE-USDT 合约行情报告</h1>
             <div class="update-time">
-                更新时间: <span id="updateTime">2026-03-18 10:00:00</span>
+                更新时间: <span id="updateTime">加载中...</span>
                 <button class="refresh-btn" onclick="location.reload()">🔄 刷新</button>
             </div>
         </header>
@@ -251,26 +251,26 @@
         <div class="price-header">
             <div class="price-card">
                 <div class="price-label">当前价格 (USDT)</div>
-                <div class="price-value price-up" id="currentPrice">0.09948</div>
+                <div class="price-value price-up" id="currentPrice">--</div>
             </div>
             <div class="price-card">
                 <div class="price-label">24h 涨跌幅</div>
-                <div class="price-value green" id="change24h">+0.58%</div>
+                <div class="price-value" id="change24h">--</div>
             </div>
             <div class="price-card">
                 <div class="price-label">24h 最高</div>
-                <div class="price-value" id="high24h">0.10356</div>
+                <div class="price-value" id="high24h">--</div>
             </div>
             <div class="price-card">
                 <div class="price-label">24h 最低</div>
-                <div class="price-value" id="low24h">0.09436</div>
+                <div class="price-value" id="low24h">--</div>
             </div>
         </div>
 
         <div class="tabs">
-            <button class="tab-btn active" onclick="switchPeriod('H1')">📈 H1 (1小时)</button>
-            <button class="tab-btn" onclick="switchPeriod('H4')">📊 H4 (4小时)</button>
-            <button class="tab-btn" onclick="switchPeriod('1D')">📅 日线</button>
+            <button class="tab-btn active" data-period="H1" onclick="switchPeriod('H1')">📈 H1 (1小时)</button>
+            <button class="tab-btn" data-period="H4" onclick="switchPeriod('H4')">📊 H4 (4小时)</button>
+            <button class="tab-btn" data-period="1D" onclick="switchPeriod('1D')">📅 日线</button>
         </div>
 
         <div class="chart-container">
@@ -283,36 +283,36 @@
                 <div class="boll-grid">
                     <div class="boll-item">
                         <div class="boll-item-label">上轨</div>
-                        <div class="boll-item-value red">0.10140</div>
+                        <div class="boll-item-value red" id="h1Upper">--</div>
                     </div>
                     <div class="boll-item">
                         <div class="boll-item-label">中轨</div>
-                        <div class="boll-item-value">0.10019</div>
+                        <div class="boll-item-value" id="h1Middle">--</div>
                     </div>
                     <div class="boll-item">
                         <div class="boll-item-label">下轨</div>
-                        <div class="boll-item-value green">0.09898</div>
+                        <div class="boll-item-value green" id="h1Lower">--</div>
                     </div>
                 </div>
-                <div class="status-tag status-normal" id="h1Status">中轨下方运行</div>
+                <div class="status-tag status-normal" id="h1Status">计算中...</div>
             </div>
             <div class="boll-card">
                 <div class="boll-title">布林带分析 (H4)</div>
                 <div class="boll-grid">
                     <div class="boll-item">
                         <div class="boll-item-label">上轨</div>
-                        <div class="boll-item-value red">0.10393</div>
+                        <div class="boll-item-value red" id="h4Upper">--</div>
                     </div>
                     <div class="boll-item">
                         <div class="boll-item-label">中轨</div>
-                        <div class="boll-item-value">0.09901</div>
+                        <div class="boll-item-value" id="h4Middle">--</div>
                     </div>
                     <div class="boll-item">
                         <div class="boll-item-label">下轨</div>
-                        <div class="boll-item-value green">0.09408</div>
+                        <div class="boll-item-value green" id="h4Lower">--</div>
                     </div>
                 </div>
-                <div class="status-tag status-normal" id="h4Status">中轨附近运行</div>
+                <div class="status-tag status-normal" id="h4Status">计算中...</div>
             </div>
         </div>
 
@@ -341,50 +341,70 @@
 
     <script src="kline-data.js"></script>
     <script>
-        // 初始化图表
-        const chart = LightweightCharts.createChart(document.getElementById('chart'), {
-            layout: {
-                background: { type: 'solid', color: 'transparent' },
-                textColor: '#ddd',
-            },
-            grid: {
-                vertLines: { color: 'rgba(255,255,255,0.1)' },
-                horzLines: { color: 'rgba(255,255,255,0.1)' },
-            },
-            crosshair: {
-                mode: LightweightCharts.CrosshairMode.Normal,
-            },
-            rightPriceScale: {
-                borderColor: 'rgba(255,255,255,0.2)',
-            },
-            timeScale: {
-                borderColor: 'rgba(255,255,255,0.2)',
-                timeVisible: true,
-            },
-        });
-
-        // 添加K线系列
-        const candleSeries = chart.addCandlestickSeries({
-            upColor: '#00ff88',
-            downColor: '#ff4757',
-            borderUpColor: '#00ff88',
-            borderDownColor: '#ff4757',
-            wickUpColor: '#00ff88',
-            wickDownColor: '#ff4757',
-        });
-
+        let chart, candleSeries;
         let currentPeriod = 'H1';
+
+        // 计算布林带
+        function calcBollinger(data, period = 20, mult = 2) {
+            if (data.length < period) return null;
+            const recent = data.slice(-period);
+            const ma = recent.reduce((sum, d) => sum + d.close, 0) / period;
+            const variance = recent.reduce((sum, d) => sum + Math.pow(d.close - ma, 2), 0) / period;
+            const std = Math.sqrt(variance);
+            return {
+                upper: ma + mult * std,
+                middle: ma,
+                lower: ma - mult * std
+            };
+        }
+
+        // 初始化图表
+        function initChart() {
+            chart = LightweightCharts.createChart(document.getElementById('chart'), {
+                layout: {
+                    background: { type: 'solid', color: 'transparent' },
+                    textColor: '#ddd',
+                },
+                grid: {
+                    vertLines: { color: 'rgba(255,255,255,0.1)' },
+                    horzLines: { color: 'rgba(255,255,255,0.1)' },
+                },
+                crosshair: {
+                    mode: LightweightCharts.CrosshairMode.Normal,
+                },
+                rightPriceScale: {
+                    borderColor: 'rgba(255,255,255,0.2)',
+                },
+                timeScale: {
+                    borderColor: 'rgba(255,255,255,0.2)',
+                    timeVisible: true,
+                },
+            });
+
+            candleSeries = chart.addCandlestickSeries({
+                upColor: '#00ff88',
+                downColor: '#ff4757',
+                borderUpColor: '#00ff88',
+                borderDownColor: '#ff4757',
+                wickUpColor: '#00ff88',
+                wickDownColor: '#ff4757',
+            });
+        }
 
         // 切换周期
         function switchPeriod(period) {
             currentPeriod = period;
             
             // 更新按钮状态
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.period === period) {
+                    btn.classList.add('active');
+                }
+            });
             
             // 更新图表数据
-            if (klineData[period]) {
+            if (klineData[period] && candleSeries) {
                 candleSeries.setData(klineData[period]);
                 chart.timeScale().fitContent();
             }
@@ -407,11 +427,9 @@
                     ? date.toLocaleDateString('zh-CN')
                     : `${date.getHours().toString().padStart(2, '0')}:00`;
                 
-                const prev = data[data.length - 15 + index - 1];
-                let change = 0;
-                if (prev && index < recentData.length - 1) {
-                    change = ((item.close - prev.close) / prev.close * 100);
-                }
+                const change = index < recentData.length - 1 
+                    ? ((item.close - recentData[index + 1].close) / recentData[index + 1].close * 100)
+                    : 0;
                 
                 const row = document.createElement('tr');
                 row.innerHTML = `
@@ -426,26 +444,101 @@
             });
         }
 
-        // 页面加载完成后初始化
-        window.addEventListener('load', function() {
-            // 更新最新价格
+        // 更新价格信息
+        function updatePriceInfo() {
             const h1Data = klineData['H1'] || [];
             if (h1Data.length > 0) {
                 const latest = h1Data[h1Data.length - 1];
+                const first = h1Data[0];
+                
                 document.getElementById('currentPrice').textContent = latest.close.toFixed(5);
                 
-                const first = h1Data[0];
                 const change = ((latest.close - first.open) / first.open * 100);
                 const changeEl = document.getElementById('change24h');
                 changeEl.textContent = (change >= 0 ? '+' : '') + change.toFixed(2) + '%';
                 changeEl.className = 'price-value ' + (change >= 0 ? 'green' : 'red');
+                
+                // 计算24h高低
+                const h1Last24 = h1Data.slice(-24);
+                const high24 = Math.max(...h1Last24.map(d => d.high));
+                const low24 = Math.min(...h1Last24.map(d => d.low));
+                document.getElementById('high24h').textContent = high24.toFixed(5);
+                document.getElementById('low24h').textContent = low24.toFixed(5);
+            }
+        }
+
+        // 更新布林带信息
+        function updateBollInfo() {
+            const h1Data = klineData['H1'] || [];
+            const h4Data = klineData['H4'] || [];
+            
+            const h1Boll = calcBollinger(h1Data);
+            const h4Boll = calcBollinger(h4Data);
+            
+            if (h1Boll) {
+                document.getElementById('h1Upper').textContent = h1Boll.upper.toFixed(5);
+                document.getElementById('h1Middle').textContent = h1Boll.middle.toFixed(5);
+                document.getElementById('h1Lower').textContent = h1Boll.lower.toFixed(5);
+                
+                const latest = h1Data[h1Data.length - 1];
+                const distUpper = (h1Boll.upper - latest.close) / h1Boll.upper;
+                const distLower = (latest.close - h1Boll.lower) / h1Boll.lower;
+                
+                const h1Status = document.getElementById('h1Status');
+                if (distUpper <= 0.002) {
+                    h1Status.textContent = '靠近上轨';
+                    h1Status.className = 'status-tag status-touch';
+                } else if (distLower <= 0.002) {
+                    h1Status.textContent = '靠近下轨';
+                    h1Status.className = 'status-tag status-touch';
+                } else if (latest.close > h1Boll.middle) {
+                    h1Status.textContent = '中轨上方运行';
+                    h1Status.className = 'status-tag status-normal';
+                } else {
+                    h1Status.textContent = '中轨下方运行';
+                    h1Status.className = 'status-tag status-normal';
+                }
             }
             
-            // 设置K线数据
-            candleSeries.setData(klineData['H1']);
-            chart.timeScale().fitContent();
+            if (h4Boll) {
+                document.getElementById('h4Upper').textContent = h4Boll.upper.toFixed(5);
+                document.getElementById('h4Middle').textContent = h4Boll.middle.toFixed(5);
+                document.getElementById('h4Lower').textContent = h4Boll.lower.toFixed(5);
+                
+                const latest = h4Data[h4Data.length - 1];
+                const distUpper = (h4Boll.upper - latest.close) / h4Boll.upper;
+                const distLower = (latest.close - h4Boll.lower) / h4Boll.lower;
+                
+                const h4Status = document.getElementById('h4Status');
+                if (distUpper <= 0.002) {
+                    h4Status.textContent = '靠近上轨';
+                    h4Status.className = 'status-tag status-touch';
+                } else if (distLower <= 0.002) {
+                    h4Status.textContent = '靠近下轨';
+                    h4Status.className = 'status-tag status-touch';
+                } else if (latest.close > h4Boll.middle) {
+                    h4Status.textContent = '中轨上方运行';
+                    h4Status.className = 'status-tag status-normal';
+                } else {
+                    h4Status.textContent = '中轨下方运行';
+                    h4Status.className = 'status-tag status-normal';
+                }
+            }
+        }
+
+        // 页面加载完成后初始化
+        window.addEventListener('load', function() {
+            initChart();
             
-            // 更新表格
+            // 设置K线数据
+            if (klineData['H1']) {
+                candleSeries.setData(klineData['H1']);
+                chart.timeScale().fitContent();
+            }
+            
+            // 更新所有信息
+            updatePriceInfo();
+            updateBollInfo();
             updateKlineTable('H1');
             
             // 更新时间
@@ -454,7 +547,9 @@
 
         // 窗口大小变化时调整图表
         window.addEventListener('resize', function() {
-            chart.resize(document.getElementById('chart').clientWidth, 500);
+            if (chart) {
+                chart.resize(document.getElementById('chart').clientWidth, 500);
+            }
         });
     </script>
 </body>
