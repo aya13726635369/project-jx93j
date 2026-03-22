@@ -1176,11 +1176,18 @@ if (typeof RAW_DATA !== 'undefined') {
 }
 </script>
 
+</script>
+
+<div id="debug-log" style="position:fixed;top:10px;right:10px;background:#fff;padding:10px;border:2px solid red;z-index:9999;font-size:12px;max-width:300px;"></div>
+
 <!-- 调试用内联脚本 -->
 <script>
 (function() {
     const log = document.getElementById('debug-log');
-    if (!log) return;
+    if (!log) {
+        alert('debug-log not found!');
+        return;
+    }
     
     let html = '<h3>调试信息</h3>';
     html += '<p>RAW_DATA 类型: ' + (typeof RAW_DATA) + '</p>';
@@ -1200,8 +1207,6 @@ if (typeof RAW_DATA !== 'undefined') {
     log.innerHTML = html;
 })();
 </script>
-
-<div id="debug-log" style="position:fixed;top:10px;right:10px;background:#fff;padding:10px;border:2px solid red;z-index:9999;font-size:12px;max-width:300px;"></div>
 
 </body>
 </html>
