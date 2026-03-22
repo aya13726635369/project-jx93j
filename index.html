@@ -1161,64 +1161,16 @@ window.addEventListener('resize', resize);
 
 // 初始化
 window.addEventListener('load', () => {
-  try {
-    resize();
-  } catch(e) {
-    console.error('resize() 错误:', e);
-    document.getElementById('debug-log').innerHTML += '<p style="color:red;">resize() 错误: ' + e.message + '</p>';
-  }
-  try {
-    init();
-  } catch(e) {
-    console.error('init() 错误:', e);
-    document.getElementById('debug-log').innerHTML += '<p style="color:red;">init() 错误: ' + e.message + '</p>';
-  }
+  resize();
+  init();
 });
 
 // 刷新数据
 function refreshData() {
   location.reload();
 }
-// 调试信息
-console.log('RAW_DATA 类型:', typeof RAW_DATA);
-if (typeof RAW_DATA !== 'undefined') {
-    console.log('RAW_DATA.code:', RAW_DATA.code);
-    console.log('RAW_DATA.data 长度:', RAW_DATA.data ? RAW_DATA.data.length : 'undefined');
-    console.log('最后一条数据:', RAW_DATA.data ? RAW_DATA.data[0] : '无');
-}
 </script>
 
 </script>
-
-<div id="debug-log" style="position:fixed;top:10px;right:10px;background:#fff;padding:10px;border:2px solid red;z-index:9999;font-size:12px;max-width:300px;"></div>
-
-<!-- 调试用内联脚本 -->
-<script>
-(function() {
-    const log = document.getElementById('debug-log');
-    if (!log) {
-        alert('debug-log not found!');
-        return;
-    }
-    
-    let html = '<h3>调试信息</h3>';
-    html += '<p>RAW_DATA 类型: ' + (typeof RAW_DATA) + '</p>';
-    
-    if (typeof RAW_DATA !== 'undefined') {
-        html += '<p>code: ' + RAW_DATA.code + '</p>';
-        html += '<p>data 长度: ' + (RAW_DATA.data ? RAW_DATA.data.length : 'undefined') + '</p>';
-        if (RAW_DATA.data && RAW_DATA.data.length > 0) {
-            const last = RAW_DATA.data[0];
-            html += '<p>最新价格: ' + last[4] + '</p>';
-            html += '<p>时间: ' + new Date(parseInt(last[0])).toLocaleString('zh-CN') + '</p>';
-        }
-    } else {
-        html += '<p style="color:red;">RAW_DATA 未定义!</p>';
-    }
-    
-    log.innerHTML = html;
-})();
-</script>
-
 </body>
 </html>
