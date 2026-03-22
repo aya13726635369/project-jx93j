@@ -700,44 +700,29 @@ footer {
   </footer>
 </div>
 
-<script>
-// ====== 实时数据获取 ======
-const SYMBOL = 'DOGE-USDT-SWAP';
-const REFRESH_INTERVAL = 60000; // 每分钟刷新一次
+<!-- 加载静态数据 -->
+<script src="raw_data.js"></script>
 
-let rawData = null; // 存储原始数据
+<script>
+// ====== 静态数据加载 ======
 let candles = [];   // 存储解析后的数据
 let boll = [];      // 存储布林带数据
-let isLoading = true;
 
-// 从OKX API获取数据（使用CORS代理）
-async function fetchKlineData() {
-  try {
-    const targetUrl = `https://www.okx.com/api/v5/market/candles?instId=${SYMBOL}&bar=1H&limit=100`;
-    const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(targetUrl)}`;
-    
-    const resp = await fetch(proxyUrl);
-    const json = await resp.json();
-    
-    if (json.code === '0' && json.data) {
-      rawData = json.data;
-      processData();
-      updateUI();
-      isLoading = false;
-      document.getElementById('loading').classList.add('hidden');
-      // 更新状态
-      document.querySelector('.status-badge span:last-child').textContent = '实时数据已连接';
-    }
-  } catch (e) {
-    console.error('获取数据失败:', e);
-    document.getElementById('updateTime').textContent = '数据获取失败，请刷新页面重试';
-    document.querySelector('.status-badge span:last-child').textContent = '连接失败';
-    document.querySelector('.status-dot').style.background = '#ef4444';
+// 初始化
+function init() {
+  if (typeof RAW_DATA !== 'undefined' && RAW_DATA.code === '0' && RAW_DATA.data) {
+    processData(RAW_DATA.data);
+    updateUI();
+    document.getElementById('loading').classList.add('hidden');
+    document.querySelector('.status-badge span:last-child').textContent = '数据已加载';
+  } else {
+    document.querySelector('.status-badge span:last-child').textContent = '数据加载失败';
+    document.getElementById('updateTime').textContent = '请刷新页面重试';
   }
 }
 
 // 解析数据
-function processData() {
+function processData(rawData) {
   candles = rawData.slice().reverse().map(d => ({
     ts: parseInt(d[0]),
     open: parseFloat(d[1]),
@@ -1175,11 +1160,13 @@ window.addEventListener('resize', resize);
 // 初始化
 window.addEventListener('load', () => {
   resize();
-  // 获取实时数据
-  fetchKlineData();
-  // 每分钟刷新数据
-  setInterval(fetchKlineData, REFRESH_INTERVAL);
+  init();
 });
+
+// 刷新数据
+function refreshData() {
+  location.reload();
+}
 </script>
 </body>
 </html>
