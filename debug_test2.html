@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DOGE/USDT 专业行情看板 | DOGE Dashboard Pro v2026032302</title>
+<title>DOGE/USDT 涓撲笟琛屾儏鐪嬫澘 | DOGE Dashboard Pro v2026032302</title>
 <style>
 :root {
   --bg-primary: #0a0e17;
@@ -31,7 +31,7 @@ body {
   overflow-x: hidden;
 }
 
-/* 背景装饰 */
+/* 鑳屾櫙瑁呴グ */
 .bg-decoration {
   position: fixed;
   top: 0; left: 0; right: 0; bottom: 0;
@@ -474,7 +474,7 @@ header {
 .risk-list li:last-child { border-bottom: none; }
 
 .risk-list li::before {
-  content: '⚠';
+  content: '鈿?;
   color: var(--accent-yellow);
   font-size: 14px;
 }
@@ -544,21 +544,21 @@ footer {
       <div class="logo">D</div>
       <div class="brand-text">
         <h1>DOGE Dashboard Pro</h1>
-        <p>专业加密货币行情看板 | OKX 永续合约</p>
+        <p>涓撲笟鍔犲瘑璐у竵琛屾儏鐪嬫澘 | OKX 姘哥画鍚堢害</p>
       </div>
     </div>
     <div class="status-badge">
       <span class="status-dot"></span>
-      <span>实时数据连接中</span>
+      <span>瀹炴椂鏁版嵁杩炴帴涓?/span>
     </div>
   </header>
 
   <section class="price-hero">
     <div class="price-card">
       <div class="price-header">
-        <div class="coin-icon">🐕</div>
+        <div class="coin-icon">馃悤</div>
         <div class="price-title">
-          DOGE/USDT-SWAP <strong>·</strong> 1H
+          DOGE/USDT-SWAP <strong>路</strong> 1H
         </div>
       </div>
       <div class="price-main">
@@ -568,32 +568,32 @@ footer {
           <span id="changeValue">--%</span>
         </div>
       </div>
-      <div class="price-update" id="updateTime">数据更新中...</div>
+      <div class="price-update" id="updateTime">鏁版嵁鏇存柊涓?..</div>
     </div>
 
     <div class="stats-grid">
       <div class="stat-card">
-        <div class="stat-label">24H 最高</div>
+        <div class="stat-label">24H 鏈€楂?/div>
         <div class="stat-value" id="high24">--</div>
       </div>
       <div class="stat-card">
-        <div class="stat-label">24H 最低</div>
+        <div class="stat-label">24H 鏈€浣?/div>
         <div class="stat-value" id="low24">--</div>
       </div>
       <div class="stat-card">
-        <div class="stat-label">BOLL 上轨</div>
+        <div class="stat-label">BOLL 涓婅建</div>
         <div class="stat-value boll-up" id="bollUpper">--</div>
       </div>
       <div class="stat-card">
-        <div class="stat-label">BOLL 下轨</div>
+        <div class="stat-label">BOLL 涓嬭建</div>
         <div class="stat-value boll-down" id="bollLower">--</div>
       </div>
       <div class="stat-card">
-        <div class="stat-label">成交量 (24H)</div>
+        <div class="stat-label">鎴愪氦閲?(24H)</div>
         <div class="stat-value" id="vol24">--</div>
       </div>
       <div class="stat-card">
-        <div class="stat-label">布林带宽度</div>
+        <div class="stat-label">甯冩灄甯﹀搴?/div>
         <div class="stat-value" id="bollWidth">--</div>
       </div>
     </div>
@@ -601,7 +601,7 @@ footer {
 
   <section class="chart-section">
     <div class="chart-header">
-      <div class="chart-title">K线图表 · 布林带分析</div>
+      <div class="chart-title">K绾垮浘琛?路 甯冩灄甯﹀垎鏋?/div>
       <div class="timeframe-tabs">
         <button class="timeframe-tab active">1H</button>
         <button class="timeframe-tab">4H</button>
@@ -612,11 +612,11 @@ footer {
       <canvas id="klineCanvas"></canvas>
       <div class="tooltip" id="tooltip">
         <div class="tooltip-header" id="ttTime"></div>
-        <div class="tooltip-row"><span class="tooltip-key">开盘</span><span class="tooltip-val" id="ttO"></span></div>
-        <div class="tooltip-row"><span class="tooltip-key">最高</span><span class="tooltip-val" id="ttH"></span></div>
-        <div class="tooltip-row"><span class="tooltip-key">最低</span><span class="tooltip-val" id="ttL"></span></div>
-        <div class="tooltip-row"><span class="tooltip-key">收盘</span><span class="tooltip-val" id="ttC"></span></div>
-        <div class="tooltip-row"><span class="tooltip-key">成交量</span><span class="tooltip-val" id="ttV"></span></div>
+        <div class="tooltip-row"><span class="tooltip-key">寮€鐩?/span><span class="tooltip-val" id="ttO"></span></div>
+        <div class="tooltip-row"><span class="tooltip-key">鏈€楂?/span><span class="tooltip-val" id="ttH"></span></div>
+        <div class="tooltip-row"><span class="tooltip-key">鏈€浣?/span><span class="tooltip-val" id="ttL"></span></div>
+        <div class="tooltip-row"><span class="tooltip-key">鏀剁洏</span><span class="tooltip-val" id="ttC"></span></div>
+        <div class="tooltip-row"><span class="tooltip-key">鎴愪氦閲?/span><span class="tooltip-val" id="ttV"></span></div>
         <div class="tooltip-divider"></div>
         <div class="tooltip-row"><span class="tooltip-key" style="color:#a78bfa">BOLL Upper</span><span class="tooltip-val" id="ttBU" style="color:#a78bfa"></span></div>
         <div class="tooltip-row"><span class="tooltip-key" style="color:#fbbf24">BOLL Mid</span><span class="tooltip-val" id="ttBM" style="color:#fbbf24"></span></div>
@@ -624,36 +624,36 @@ footer {
       </div>
     </div>
     <div class="chart-legend">
-      <div class="legend-item"><div class="legend-line" style="background:#a78bfa"></div>布林上轨</div>
-      <div class="legend-item"><div class="legend-line dashed" style="background:#fbbf24"></div>MA20 中轨</div>
-      <div class="legend-item"><div class="legend-line" style="background:#38bdf8"></div>布林下轨</div>
-      <div class="legend-item"><div class="legend-line" style="background:#10b981"></div>上涨</div>
-      <div class="legend-item"><div class="legend-line" style="background:#ef4444"></div>下跌</div>
+      <div class="legend-item"><div class="legend-line" style="background:#a78bfa"></div>甯冩灄涓婅建</div>
+      <div class="legend-item"><div class="legend-line dashed" style="background:#fbbf24"></div>MA20 涓建</div>
+      <div class="legend-item"><div class="legend-line" style="background:#38bdf8"></div>甯冩灄涓嬭建</div>
+      <div class="legend-item"><div class="legend-line" style="background:#10b981"></div>涓婃定</div>
+      <div class="legend-item"><div class="legend-line" style="background:#ef4444"></div>涓嬭穼</div>
     </div>
   </section>
 
   <section class="analysis-section">
     <div class="analysis-card signal">
-      <h3>交易信号</h3>
+      <h3>浜ゆ槗淇″彿</h3>
       <div class="signal-item">
-        <span class="signal-label">布林带位置</span>
+        <span class="signal-label">甯冩灄甯︿綅缃?/span>
         <span class="signal-value" id="bollPosition">--</span>
       </div>
       <div class="signal-item">
-        <span class="signal-label">趋势判断</span>
+        <span class="signal-label">瓒嬪娍鍒ゆ柇</span>
         <span class="signal-value" id="trendSignal">--</span>
       </div>
       <div class="signal-item">
-        <span class="signal-label">操作建议</span>
+        <span class="signal-label">鎿嶄綔寤鸿</span>
         <span class="signal-value" id="tradeAdvice">--</span>
       </div>
     </div>
 
     <div class="analysis-card tech">
-      <h3>技术指标</h3>
+      <h3>鎶€鏈寚鏍?/h3>
       <div class="tech-bar">
         <div class="tech-bar-header">
-          <span>RSI (相对强弱)</span>
+          <span>RSI (鐩稿寮哄急)</span>
           <span id="rsiValue">--</span>
         </div>
         <div class="tech-bar-track">
@@ -662,7 +662,7 @@ footer {
       </div>
       <div class="tech-bar">
         <div class="tech-bar-header">
-          <span>布林带宽度</span>
+          <span>甯冩灄甯﹀搴?/span>
           <span id="bbWidthValue">--</span>
         </div>
         <div class="tech-bar-track">
@@ -671,7 +671,7 @@ footer {
       </div>
       <div class="tech-bar">
         <div class="tech-bar-header">
-          <span>成交量强度</span>
+          <span>鎴愪氦閲忓己搴?/span>
           <span id="volValue">--</span>
         </div>
         <div class="tech-bar-track">
@@ -681,527 +681,32 @@ footer {
     </div>
 
     <div class="analysis-card risk">
-      <h3>风险提示</h3>
+      <h3>椋庨櫓鎻愮ず</h3>
       <ul class="risk-list">
-        <li>加密货币市场波动剧烈，投资需谨慎</li>
-        <li>技术指标仅供参考，不构成投资建议</li>
-        <li>请根据自身风险承受能力合理配置资产</li>
-        <li>建议设置止损止盈，控制仓位风险</li>
+        <li>鍔犲瘑璐у竵甯傚満娉㈠姩鍓х儓锛屾姇璧勯渶璋ㄦ厧</li>
+        <li>鎶€鏈寚鏍囦粎渚涘弬鑰冿紝涓嶆瀯鎴愭姇璧勫缓璁?/li>
+        <li>璇锋牴鎹嚜韬闄╂壙鍙楄兘鍔涘悎鐞嗛厤缃祫浜?/li>
+        <li>寤鸿璁剧疆姝㈡崯姝㈢泩锛屾帶鍒朵粨浣嶉闄?/li>
       </ul>
     </div>
   </section>
 
   <footer>
-    <div>数据来源: OKX API v5 | 本页面仅供学习参考</div>
+    <div>鏁版嵁鏉ユ簮: OKX API v5 | 鏈〉闈粎渚涘涔犲弬鑰?/div>
     <div class="footer-links">
-      <a href="https://www.okx.com" target="_blank">OKX官网</a>
-      <a href="#" onclick="location.reload()">刷新数据</a>
+      <a href="https://www.okx.com" target="_blank">OKX瀹樼綉</a>
+      <a href="#" onclick="location.reload()">鍒锋柊鏁版嵁</a>
     </div>
   </footer>
 </div>
 
 <script>
-// 嵌入最新K线数据（自动生成）
+// 宓屽叆鏈€鏂癒绾挎暟鎹紙鑷姩鐢熸垚锛?
 const RAW_DATA = {"code": "0", "msg": "", "data": [["1774198800000", "0.09155", "0.09156", "0.09136", "0.09144", "15408.07", "15408070", "1409484.9117", "0"], ["1774195200000", "0.09157", "0.0917", "0.09132", "0.09154", "76179.77", "76179770", "6966268.3413", "1"], ["1774191600000", "0.09137", "0.09162", "0.09124", "0.09156", "76999.67", "76999670", "7042891.0931", "1"], ["1774188000000", "0.09132", "0.09176", "0.09106", "0.09137", "101159.17", "101159170", "9254755.92", "1"], ["1774184400000", "0.09144", "0.09188", "0.09106", "0.09131", "103339.35", "103339350", "9446850.7313", "1"], ["1774180800000", "0.09105", "0.09198", "0.09104", "0.09144", "189906.19", "189906190", "17372932.0532", "1"], ["1774177200000", "0.09094", "0.09122", "0.09081", "0.09105", "90678.49", "90678490", "8251569.9335", "1"], ["1774173600000", "0.09117", "0.09117", "0.09086", "0.09095", "60082.17", "60082170", "5467537.1086", "1"], ["1774170000000", "0.09113", "0.09157", "0.09097", "0.09116", "110287.53", "110287530", "10063436.8656", "1"], ["1774166400000", "0.09128", "0.09135", "0.09067", "0.09113", "223863.53", "223863530", "20368277.8531", "1"], ["1774162800000", "0.09183", "0.09198", "0.09125", "0.09128", "139205.48", "139205480", "12755731.3645", "1"], ["1774159200000", "0.0921", "0.09211", "0.09168", "0.09182", "119895.2", "119895200", "11011197.04", "1"], ["1774155600000", "0.09259", "0.0926", "0.09207", "0.0921", "88176.72", "88176720", "8142273.3219", "1"], ["1774152000000", "0.09226", "0.09276", "0.09211", "0.09259", "131701.6", "131701600", "12177033.7795", "1"], ["1774148400000", "0.09198", "0.09281", "0.09167", "0.09227", "197494.18", "197494180", "18237780.2595", "1"], ["1774144800000", "0.09141", "0.09232", "0.09141", "0.09198", "156432.68", "156432680", "14368021.035", "1"], ["1774141200000", "0.09138", "0.0918", "0.091", "0.09141", "187076.96", "187076960", "17086063.9827", "1"], ["1774137600000", "0.09127", "0.09193", "0.08981", "0.09138", "527848.33", "527848330", "47968207.005", "1"], ["1774134000000", "0.09395", "0.09396", "0.09043", "0.09127", "752413.05", "752413050", "69033752.8592", "1"], ["1774130400000", "0.0941", "0.09416", "0.09386", "0.09395", "32872.92", "32872920", "3089208.4028", "1"], ["1774126800000", "0.09428", "0.0943", "0.09399", "0.0941", "43106.73", "43106730", "4058354.5468", "1"], ["1774123200000", "0.094", "0.09435", "0.09394", "0.09428", "47048.57", "47048570", "4431447.3476", "1"], ["1774119600000", "0.09401", "0.09408", "0.09382", "0.09401", "42923.54", "42923540", "4032570.1984", "1"], ["1774116000000", "0.094", "0.09421", "0.09387", "0.09401", "32813.93", "32813930", "3085048.2895", "1"], ["1774112400000", "0.09425", "0.09429", "0.09383", "0.09399", "79178.54", "79178540", "7446834.0398", "1"], ["1774108800000", "0.0946", "0.09463", "0.09415", "0.09425", "128492.59", "128492590", "12131327.7027", "1"], ["1774105200000", "0.09365", "0.0946", "0.09359", "0.0946", "135663.08", "135663080", "12769317.6838", "1"], ["1774101600000", "0.09365", "0.09422", "0.09355", "0.09365", "106410.31", "106410310", "9993372.0198", "1"], ["1774098000000", "0.09393", "0.09397", "0.09347", "0.09364", "95423.45", "95423450", "8939401.685", "1"], ["1774094400000", "0.09397", "0.09411", "0.09386", "0.09394", "49431.52", "49431520", "4645375.4759", "1"], ["1774090800000", "0.09395", "0.09404", "0.09372", "0.09396", "47644.61", "47644610", "4474757.3801", "1"], ["1774087200000", "0.09427", "0.09431", "0.09386", "0.09394", "80605.75", "80605750", "7577228.161", "1"], ["1774083600000", "0.09433", "0.09446", "0.0942", "0.09427", "35300.09", "35300090", "3330366.1164", "1"], ["1774080000000", "0.09434", "0.0944", "0.09416", "0.09432", "66277.42", "66277420", "6249433.1565", "1"], ["1774076400000", "0.09457", "0.09469", "0.09424", "0.09434", "101303.68", "101303680", "9570529.7537", "1"], ["1774072800000", "0.09466", "0.0949", "0.0944", "0.09457", "81499.54", "81499540", "7715628.5348", "1"], ["1774069200000", "0.09453", "0.09487", "0.09453", "0.09465", "73302.92", "73302920", "6946223.92", "1"], ["1774065600000", "0.09467", "0.09482", "0.09448", "0.09454", "53118.6", "53118600", "5024990.3182", "1"], ["1774062000000", "0.09465", "0.09492", "0.09455", "0.09467", "82387.5", "82387500", "7805024.6814", "1"], ["1774058400000", "0.09396", "0.09477", "0.09394", "0.09465", "128178.48", "128178480", "12110187.0558", "1"], ["1774054800000", "0.09428", "0.09454", "0.09386", "0.09396", "69978.02", "69978020", "6589064.9503", "1"], ["1774051200000", "0.09412", "0.09434", "0.09399", "0.09428", "48497.86", "48497860", "4568213.5892", "1"], ["1774047600000", "0.09431", "0.09432", "0.09383", "0.09411", "56044.71", "56044710", "5270885.9435", "1"], ["1774044000000", "0.09415", "0.09492", "0.09414", "0.09431", "120143.49", "120143490", "11363426.4978", "1"], ["1774040400000", "0.09368", "0.09442", "0.09337", "0.09414", "85589.54", "85589540", "8044169.2476", "1"], ["1774036800000", "0.09366", "0.09375", "0.09314", "0.09369", "62131.85", "62131850", "5809273.067", "1"], ["1774033200000", "0.0935", "0.09372", "0.09282", "0.09366", "117813.54", "117813540", "10992119.0085", "1"], ["1774029600000", "0.09399", "0.0942", "0.09316", "0.09349", "89435.8", "89435800", "8377779.1947", "1"], ["1774026000000", "0.09388", "0.09409", "0.09338", "0.09398", "93994.1", "93994100", "8811409.9894", "1"], ["1774022400000", "0.09416", "0.09441", "0.09352", "0.09388", "112695.01", "112695010", "10579825.1187", "1"], ["1774018800000", "0.09367", "0.09429", "0.09346", "0.09416", "122451.93", "122451930", "11499722.1762", "1"], ["1774015200000", "0.09334", "0.09423", "0.09302", "0.09368", "245068.82", "245068820", "22952099.891", "1"], ["1774011600000", "0.0938", "0.0942", "0.09316", "0.09334", "208609.12", "208609120", "19530991.4988", "1"], ["1774008000000", "0.09402", "0.09438", "0.09359", "0.0938", "123786.7", "123786700", "11632897.7534", "1"], ["1774004400000", "0.09431", "0.09471", "0.09379", "0.09402", "100155.44", "100155440", "9437876.7157", "1"], ["1774000800000", "0.09387", "0.09442", "0.09344", "0.09432", "112823.4", "112823400", "10593109.7963", "1"], ["1773997200000", "0.09445", "0.09445", "0.09364", "0.09387", "94151.42", "94151420", "8846200.3573", "1"], ["1773993600000", "0.09404", "0.09509", "0.09401", "0.09445", "149165.79", "149165790", "14110735.9128", "1"], ["1773990000000", "0.09435", "0.09435", "0.09356", "0.09404", "184063.55", "184063550", "17286670.4767", "1"], ["1773986400000", "0.0947", "0.09483", "0.09427", "0.09436", "86551.79", "86551790", "8184154.9259", "1"], ["1773982800000", "0.09457", "0.09538", "0.09447", "0.09471", "215972.87", "215972870", "20508118.4544", "1"], ["1773979200000", "0.09403", "0.09464", "0.09372", "0.09458", "111476.99", "111476990", "10496684.6237", "1"], ["1773975600000", "0.09393", "0.0945", "0.09377", "0.09403", "100133.8", "100133800", "9424999.7091", "1"], ["1773972000000", "0.09419", "0.09428", "0.09349", "0.09393", "122924.08", "122924080", "11541625.721", "1"], ["1773968400000", "0.09387", "0.09463", "0.09386", "0.0942", "137008.1", "137008100", "12915574.6106", "1"], ["1773964800000", "0.09348", "0.09393", "0.09342", "0.09387", "105819.31", "105819310", "9914759.903", "1"], ["1773961200000", "0.09324", "0.09366", "0.09314", "0.09347", "114767.81", "114767810", "10723657.7557", "1"], ["1773957600000", "0.09356", "0.09361", "0.09292", "0.09323", "79691.05", "79691050", "7432979.5241", "1"], ["1773954000000", "0.09352", "0.09375", "0.09342", "0.09356", "43948.77", "43948770", "4113142.7462", "1"], ["1773950400000", "0.09327", "0.09375", "0.09321", "0.09351", "50877.6", "50877600", "4752299.9435", "1"], ["1773946800000", "0.09271", "0.09389", "0.09268", "0.09327", "171935.02", "171935020", "16072500.8967", "1"], ["1773943200000", "0.09284", "0.09304", "0.09241", "0.09271", "65885.39", "65885390", "6105117.3339", "1"], ["1773939600000", "0.09234", "0.09295", "0.09166", "0.09285", "206893.9", "206893900", "19080333.3292", "1"], ["1773936000000", "0.09282", "0.09286", "0.09201", "0.09234", "189980.91", "189980910", "17550325.9311", "1"], ["1773932400000", "0.093", "0.09344", "0.09226", "0.09283", "181745.91", "181745910", "16841957.887", "1"], ["1773928800000", "0.09331", "0.09372", "0.09245", "0.093", "184764.4", "184764400", "17174682.0308", "1"], ["1773925200000", "0.09247", "0.09362", "0.09207", "0.09331", "386118.69", "386118690", "35808734.1314", "1"], ["1773921600000", "0.09394", "0.09395", "0.09242", "0.09248", "379868.4", "379868400", "35401726.5713", "1"], ["1773918000000", "0.09414", "0.09421", "0.09369", "0.09394", "152912.14", "152912140", "14369630.9813", "1"], ["1773914400000", "0.095", "0.09509", "0.09407", "0.09414", "127984.44", "127984440", "12100472.5256", "1"], ["1773910800000", "0.09415", "0.09537", "0.09414", "0.095", "205102.6", "205102600", "19464723.4147", "1"], ["1773907200000", "0.09432", "0.09461", "0.09406", "0.09415", "98424.09", "98424090", "9284080.1937", "1"], ["1773903600000", "0.09455", "0.0948", "0.09311", "0.09433", "452643.87", "452643870", "42546847.6358", "1"], ["1773900000000", "0.09449", "0.09486", "0.09415", "0.09456", "94880.51", "94880510", "8969814.2449", "1"], ["1773896400000", "0.09473", "0.09491", "0.09421", "0.09449", "123837.03", "123837030", "11705127.861", "1"], ["1773892800000", "0.09538", "0.09546", "0.09465", "0.09472", "121941.93", "121941930", "11579742.3793", "1"], ["1773889200000", "0.0945", "0.09605", "0.09449", "0.09539", "190227.8", "190227800", "18162755.129", "1"], ["1773885600000", "0.09481", "0.09491", "0.09437", "0.0945", "89665.88", "89665880", "8485647.3837", "1"], ["1773882000000", "0.095", "0.09519", "0.09479", "0.09482", "61971.3", "61971300", "5886551.5488", "1"], ["1773878400000", "0.09519", "0.09542", "0.09491", "0.095", "97164.56", "97164560", "9245397.5733", "1"], ["1773874800000", "0.09493", "0.09522", "0.0947", "0.09519", "72304.95", "72304950", "6868319.7935", "1"], ["1773871200000", "0.09528", "0.09528", "0.09481", "0.09492", "68215.44", "68215440", "6481182.6892", "1"], ["1773867600000", "0.09509", "0.09557", "0.09493", "0.09528", "101946.15", "101946150", "9710147.7135", "1"], ["1773864000000", "0.09459", "0.0952", "0.09387", "0.0951", "133625.73", "133625730", "12626268.7794", "1"], ["1773860400000", "0.09442", "0.09533", "0.0944", "0.09459", "154651.2", "154651200", "14670474.1969", "1"], ["1773856800000", "0.09431", "0.09552", "0.09413", "0.09443", "388820.66", "388820660", "36895482.1077", "1"], ["1773853200000", "0.09378", "0.09476", "0.09323", "0.0943", "289915.31", "289915310", "27238335.9308", "1"], ["1773849600000", "0.0943", "0.0943", "0.09342", "0.09378", "353990.65", "353990650", "33221062.4829", "1"], ["1773846000000", "0.09447", "0.09477", "0.09391", "0.09431", "261670.07", "261670070", "24693230.7764", "1"], ["1773842400000", "0.09575", "0.09579", "0.09423", "0.09447", "436455.78", "436455780", "41407525.149", "1"]]};
 
-// ====== 静态数据加载 ======
-let candles = [];   // 存储解析后的数据
-let boll = [];      // 存储布林带数据
-
-// 初始化
-function init() {
-  if (typeof RAW_DATA !== 'undefined' && RAW_DATA.code === '0' && RAW_DATA.data) {
-    processData(RAW_DATA.data);
-    updateUI();
-    document.getElementById('loading').classList.add('hidden');
-    document.querySelector('.status-badge span:last-child').textContent = '数据已更新';
-  } else {
-    document.querySelector('.status-badge span:last-child').textContent = '数据加载失败';
-    document.getElementById('updateTime').textContent = '请刷新页面重试';
-  }
-}
-
-// 解析数据
-function processData(rawData) {
-  candles = rawData.slice().reverse().map(d => ({
-    ts: parseInt(d[0]),
-    open: parseFloat(d[1]),
-    high: parseFloat(d[2]),
-    low: parseFloat(d[3]),
-    close: parseFloat(d[4]),
-    vol: parseFloat(d[5])
-  }));
-  
-  // 计算布林带
-  const BOLL_PERIOD = 20;
-  const BOLL_MULT = 2;
-  boll = candles.map((_, i) => {
-    if (i < BOLL_PERIOD - 1) return null;
-    const slice = candles.slice(i - BOLL_PERIOD + 1, i + 1).map(c => c.close);
-    const mean = slice.reduce((a, b) => a + b, 0) / BOLL_PERIOD;
-    const std = Math.sqrt(slice.reduce((s, v) => s + (v - mean) ** 2, 0) / BOLL_PERIOD);
-    return { mid: mean, upper: mean + BOLL_MULT * std, lower: mean - BOLL_MULT * std };
-  });
-}
-
-// 计算RSI
-function calcRSI(data, period = 14) {
-  let gains = 0, losses = 0;
-  for (let i = 1; i <= period; i++) {
-    const change = data[i].close - data[i-1].close;
-    if (change > 0) gains += change;
-    else losses -= change;
-  }
-  let avgGain = gains / period;
-  let avgLoss = losses / period;
-  
-  for (let i = period + 1; i < data.length; i++) {
-    const change = data[i].close - data[i-1].close;
-    avgGain = (avgGain * (period - 1) + (change > 0 ? change : 0)) / period;
-    avgLoss = (avgLoss * (period - 1) + (change < 0 ? -change : 0)) / period;
-  }
-  const rs = avgGain / avgLoss;
-  return avgLoss === 0 ? 100 : 100 - (100 / (1 + rs));
-}
-
-// 更新UI
-function updateUI() {
-  if (candles.length === 0) return;
-  
-  const last = candles[candles.length - 1];
-  const first = candles[0];
-  const high24 = Math.max(...candles.map(c => c.high));
-  const low24 = Math.min(...candles.map(c => c.low));
-  const totalVol = candles.reduce((s, c) => s + c.vol, 0);
-  const change = ((last.close - first.open) / first.open * 100);
-  const lastBoll = boll[boll.length - 1];
-  const rsi = calcRSI(candles);
-  
-  // 更新价格卡片
-  document.getElementById('mainPrice').textContent = '$' + last.close.toFixed(5);
-  document.getElementById('mainPrice').className = 'price-value ' + (change >= 0 ? 'up' : 'down');
-  document.getElementById('priceChange').className = 'price-change ' + (change >= 0 ? 'up' : 'down');
-  document.getElementById('changeIcon').textContent = change >= 0 ? '▲' : '▼';
-  document.getElementById('changeValue').textContent = (change >= 0 ? '+' : '') + change.toFixed(2) + '%';
-  document.getElementById('updateTime').textContent = '更新时间: ' + new Date(last.ts).toLocaleString('zh-CN');
-  
-  // 更新统计卡片
-  document.getElementById('high24').textContent = '$' + high24.toFixed(5);
-  document.getElementById('low24').textContent = '$' + low24.toFixed(5);
-  document.getElementById('bollUpper').textContent = lastBoll ? '$' + lastBoll.upper.toFixed(5) : '--';
-  document.getElementById('bollLower').textContent = lastBoll ? '$' + lastBoll.lower.toFixed(5) : '--';
-  document.getElementById('vol24').textContent = (totalVol / 1000000).toFixed(2) + 'M';
-  const bollWidth = lastBoll ? ((lastBoll.upper - lastBoll.lower) / lastBoll.mid * 100).toFixed(2) + '%' : '--';
-  document.getElementById('bollWidth').textContent = bollWidth;
-  
-  // 交易信号分析
-  const pricePosition = lastBoll ? (last.close - lastBoll.lower) / (lastBoll.upper - lastBoll.lower) : 0.5;
-  let bollPosText, bollPosClass;
-  if (pricePosition > 0.8) { bollPosText = '超买区'; bollPosClass = 'sell'; }
-  else if (pricePosition < 0.2) { bollPosText = '超卖区'; bollPosClass = 'buy'; }
-  else { bollPosText = '中轨附近'; bollPosClass = 'neutral'; }
-  document.getElementById('bollPosition').textContent = bollPosText;
-  document.getElementById('bollPosition').className = 'signal-value ' + bollPosClass;
-  
-  let trendText, trendClass;
-  if (last.close > lastBoll?.mid) { trendText = '偏多'; trendClass = 'buy'; }
-  else if (last.close < lastBoll?.mid) { trendText = '偏空'; trendClass = 'sell'; }
-  else { trendText = '震荡'; trendClass = 'neutral'; }
-  document.getElementById('trendSignal').textContent = trendText;
-  document.getElementById('trendSignal').className = 'signal-value ' + trendClass;
-  
-  let adviceText, adviceClass;
-  if (pricePosition < 0.15) { adviceText = '关注买入'; adviceClass = 'buy'; }
-  else if (pricePosition > 0.85) { adviceText = '关注卖出'; adviceClass = 'sell'; }
-  else { adviceText = '观望'; adviceClass = 'neutral'; }
-  document.getElementById('tradeAdvice').textContent = adviceText;
-  document.getElementById('tradeAdvice').className = 'signal-value ' + adviceClass;
-  
-  // 技术指标进度条
-  document.getElementById('rsiValue').textContent = rsi.toFixed(1);
-  document.getElementById('rsiBar').style.width = rsi + '%';
-  document.getElementById('rsiBar').className = 'tech-bar-fill ' + (rsi > 70 ? 'red' : rsi < 30 ? 'green' : 'yellow');
-  
-  document.getElementById('bbWidthValue').textContent = bollWidth;
-  document.getElementById('bbBar').style.width = Math.min(parseFloat(bollWidth) * 5, 100) + '%';
-  document.getElementById('bbBar').className = 'tech-bar-fill yellow';
-  
-  const avgVol = totalVol / candles.length;
-  const recentVol = candles.slice(-5).reduce((s, c) => s + c.vol, 0) / 5;
-  const volRatio = Math.min((recentVol / avgVol) * 50, 100);
-  document.getElementById('volValue').textContent = (recentVol / avgVol).toFixed(2) + 'x';
-  document.getElementById('volBar').style.width = volRatio + '%';
-  document.getElementById('volBar').className = 'tech-bar-fill ' + (volRatio > 70 ? 'green' : 'yellow');
-  
-  // 重绘图表
-  drawChart();
-}
-
-// ====== 图表绘制代码 ======
-// (保留原有的Canvas图表绘制代码)
-
-// Canvas 图表绘制
-const canvas = document.getElementById('klineCanvas');
-const wrap = document.getElementById('chartWrap');
-const DPR = window.devicePixelRatio || 1;
-const PAD = { top: 20, right: 70, bottom: 80, left: 14 };
-const VOL_H_RATIO = 0.22;
-const CROSS_COLOR = '#58a6ff';
-
-function resize() {
-  const W = wrap.clientWidth;
-  const H = 420;
-  canvas.style.width = W + 'px';
-  canvas.style.height = H + 'px';
-  canvas.width = W * DPR;
-  canvas.height = H * DPR;
-  drawChart();
-}
-
-function formatTime(ts) {
-  const d = new Date(ts);
-  return String(d.getMonth()+1).padStart(2,'0') + '-' + 
-         String(d.getDate()).padStart(2,'0') + ' ' + 
-         String(d.getHours()).padStart(2,'0') + ':00';
-}
-
-function niceRange(min, max, ticks) {
-  const range = max - min;
-  const rough = range / ticks;
-  const mag = Math.pow(10, Math.floor(Math.log10(rough)));
-  const nice = [1,2,2.5,5,10].map(f=>f*mag).find(f=>f>=rough) || mag*10;
-  const lo = Math.floor(min / nice) * nice;
-  const hi = Math.ceil(max / nice) * nice;
-  const steps = [];
-  for (let v = lo; v <= hi + nice*0.001; v = +(v + nice).toFixed(10)) steps.push(+v.toFixed(10));
-  return steps;
-}
-
-let hoverIdx = null;
-
-function drawChart() {
-  const CW = canvas.width;
-  const CH = canvas.height;
-  const ctx = canvas.getContext('2d');
-  ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
-  ctx.clearRect(0, 0, CW / DPR, CH / DPR);
-
-  const W = CW / DPR;
-  const H = CH / DPR;
-
-  const volH = (H - PAD.top - PAD.bottom) * VOL_H_RATIO;
-  const kH = (H - PAD.top - PAD.bottom) * (1 - VOL_H_RATIO) - 8;
-  const kTop = PAD.top;
-  const kBot = PAD.top + kH;
-  const volTop = kBot + 8;
-  const volBot = H - PAD.bottom;
-
-  const plotW = W - PAD.left - PAD.right;
-  const n = candles.length;
-  const barW = plotW / n;
-  const bodyW = Math.max(1, barW * 0.65);
-
-  const bollValues = boll.filter(Boolean);
-  const bollMax = bollValues.length ? Math.max(...bollValues.map(b => b.upper)) : -Infinity;
-  const bollMin = bollValues.length ? Math.min(...bollValues.map(b => b.lower)) : Infinity;
-  const priceMin = Math.min(Math.min(...candles.map(c=>c.low)), bollMin);
-  const priceMax = Math.max(Math.max(...candles.map(c=>c.high)), bollMax);
-  const pPad = (priceMax - priceMin) * 0.06;
-  const pLo = priceMin - pPad;
-  const pHi = priceMax + pPad;
-
-  const volMax = Math.max(...candles.map(c=>c.vol));
-
-  const px = i => PAD.left + (i + 0.5) * barW;
-  const py = v => kTop + (1 - (v - pLo)/(pHi - pLo)) * kH;
-  const vy = v => volBot - (v / volMax) * volH;
-
-  // 背景
-  ctx.fillStyle = '#0d1117';
-  ctx.fillRect(0, 0, W, H);
-
-  // 网格
-  const priceSteps = niceRange(pLo, pHi, 6);
-  ctx.strokeStyle = '#21262d';
-  ctx.lineWidth = 1;
-  ctx.setLineDash([3, 4]);
-  priceSteps.forEach(v => {
-    const y = py(v);
-    if (y < kTop - 2 || y > kBot + 2) return;
-    ctx.beginPath(); ctx.moveTo(PAD.left, y); ctx.lineTo(W - PAD.right, y); ctx.stroke();
-  });
-  ctx.setLineDash([]);
-
-  // 右侧价格轴
-  ctx.fillStyle = '#8b949e';
-  ctx.font = '11px Segoe UI, sans-serif';
-  ctx.textAlign = 'left';
-  priceSteps.forEach(v => {
-    const y = py(v);
-    if (y < kTop - 2 || y > kBot + 2) return;
-    ctx.fillText(v.toFixed(5), W - PAD.right + 4, y + 4);
-  });
-
-  // X轴时间标签
-  ctx.fillStyle = '#8b949e';
-  ctx.textAlign = 'center';
-  ctx.font = '10px Segoe UI, sans-serif';
-  const labelStep = Math.ceil(n / 8);
-  for (let i = 0; i < n; i += labelStep) {
-    const x = px(i);
-    ctx.fillText(formatTime(candles[i].ts), x, H - PAD.bottom + 14);
-  }
-
-  // 分割线
-  ctx.strokeStyle = '#30363d';
-  ctx.lineWidth = 1;
-  ctx.beginPath(); ctx.moveTo(PAD.left, kBot+4); ctx.lineTo(W-PAD.right, kBot+4); ctx.stroke();
-  ctx.beginPath(); ctx.moveTo(W-PAD.right, kTop); ctx.lineTo(W-PAD.right, volBot); ctx.stroke();
-
-  // 布林带填充
-  ctx.beginPath();
-  let bollStarted = false;
-  for (let i = 0; i < n; i++) {
-    if (!boll[i]) continue;
-    const x = px(i);
-    const y = py(boll[i].upper);
-    if (!bollStarted) { ctx.moveTo(x, y); bollStarted = true; }
-    else ctx.lineTo(x, y);
-  }
-  for (let i = n - 1; i >= 0; i--) {
-    if (!boll[i]) continue;
-    ctx.lineTo(px(i), py(boll[i].lower));
-  }
-  ctx.closePath();
-  ctx.fillStyle = 'rgba(139,92,246,0.08)';
-  ctx.fill();
-
-  // 上轨
-  ctx.beginPath();
-  bollStarted = false;
-  for (let i = 0; i < n; i++) {
-    if (!boll[i]) continue;
-    const x = px(i), y = py(boll[i].upper);
-    if (!bollStarted) { ctx.moveTo(x, y); bollStarted = true; } else ctx.lineTo(x, y);
-  }
-  ctx.strokeStyle = 'rgba(167,139,250,0.9)';
-  ctx.lineWidth = 1.5;
-  ctx.stroke();
-
-  // 中轨
-  ctx.beginPath();
-  bollStarted = false;
-  for (let i = 0; i < n; i++) {
-    if (!boll[i]) continue;
-    const x = px(i), y = py(boll[i].mid);
-    if (!bollStarted) { ctx.moveTo(x, y); bollStarted = true; } else ctx.lineTo(x, y);
-  }
-  ctx.strokeStyle = 'rgba(251,191,36,0.9)';
-  ctx.lineWidth = 1.5;
-  ctx.setLineDash([4, 3]);
-  ctx.stroke();
-  ctx.setLineDash([]);
-
-  // 下轨
-  ctx.beginPath();
-  bollStarted = false;
-  for (let i = 0; i < n; i++) {
-    if (!boll[i]) continue;
-    const x = px(i), y = py(boll[i].lower);
-    if (!bollStarted) { ctx.moveTo(x, y); bollStarted = true; } else ctx.lineTo(x, y);
-  }
-  ctx.strokeStyle = 'rgba(56,189,248,0.9)';
-  ctx.lineWidth = 1.5;
-  ctx.stroke();
-
-  // K线
-  candles.forEach((c, i) => {
-    const x = px(i);
-    const up = c.close >= c.open;
-    const col = up ? '#10b981' : '#ef4444';
-    const yO = py(c.open);
-    const yC = py(c.close);
-    const yH = py(c.high);
-    const yL = py(c.low);
-
-    ctx.strokeStyle = col;
-    ctx.lineWidth = 1;
-    ctx.beginPath();
-    ctx.moveTo(x, yH);
-    ctx.lineTo(x, yL);
-    ctx.stroke();
-
-    const top = Math.min(yO, yC);
-    const height = Math.max(1, Math.abs(yC - yO));
-    const bx = x - bodyW / 2;
-
-    if (i === hoverIdx) {
-      ctx.fillStyle = up ? 'rgba(16,185,129,0.25)' : 'rgba(239,68,68,0.25)';
-      ctx.fillRect(bx - 2, kTop, bodyW + 4, kH);
-    }
-
-    ctx.fillStyle = col;
-    ctx.fillRect(bx, top, bodyW, height);
-    if (!up || height < 2) {
-      ctx.strokeStyle = col;
-      ctx.lineWidth = 1;
-      ctx.strokeRect(bx, top, bodyW, height);
-    }
-  });
-
-  // 成交量
-  candles.forEach((c, i) => {
-    const x = px(i);
-    const up = c.close >= c.open;
-    const col = up ? 'rgba(16,185,129,0.55)' : 'rgba(239,68,68,0.55)';
-    const top = vy(c.vol);
-    const h = volBot - top;
-    ctx.fillStyle = col;
-    ctx.fillRect(x - bodyW/2, top, bodyW, h);
-  });
-
-  // 悬停十字线
-  if (hoverIdx !== null) {
-    const c = candles[hoverIdx];
-    const x = px(hoverIdx);
-    const y = py(c.close);
-    ctx.strokeStyle = CROSS_COLOR;
-    ctx.lineWidth = 1;
-    ctx.setLineDash([4, 4]);
-    ctx.beginPath(); ctx.moveTo(x, kTop); ctx.lineTo(x, volBot); ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(PAD.left, y); ctx.lineTo(W-PAD.right, y); ctx.stroke();
-    ctx.setLineDash([]);
-
-    ctx.fillStyle = CROSS_COLOR;
-    ctx.fillRect(W - PAD.right + 1, y - 9, PAD.right - 2, 18);
-    ctx.fillStyle = '#0d1117';
-    ctx.textAlign = 'left';
-    ctx.font = 'bold 11px Segoe UI, sans-serif';
-    ctx.fillText(c.close.toFixed(5), W - PAD.right + 4, y + 4);
-  }
-
-  // 当前价格线
-  const lastCandle = candles[candles.length - 1];
-  const curY = py(lastCandle.close);
-  const upNow = lastCandle.close >= lastCandle.open;
-  ctx.strokeStyle = upNow ? '#10b981' : '#ef4444';
-  ctx.lineWidth = 1;
-  ctx.setLineDash([5, 3]);
-  ctx.beginPath(); ctx.moveTo(PAD.left, curY); ctx.lineTo(W-PAD.right, curY); ctx.stroke();
-  ctx.setLineDash([]);
-
-  ctx.fillStyle = upNow ? '#10b981' : '#ef4444';
-  ctx.fillRect(W - PAD.right + 1, curY - 9, PAD.right - 2, 18);
-  ctx.fillStyle = '#0d1117';
-  ctx.textAlign = 'left';
-  ctx.font = 'bold 11px Segoe UI, sans-serif';
-  ctx.fillText(lastCandle.close.toFixed(5), W - PAD.right + 4, curY + 4);
-
-  // Vol 标签
-  ctx.fillStyle = '#484f58';
-  ctx.font = '10px Segoe UI, sans-serif';
-  ctx.textAlign = 'left';
-  ctx.fillText('VOL', PAD.left + 2, volTop + 11);
-}
-
-// Tooltip
-const tooltip = document.getElementById('tooltip');
-canvas.addEventListener('mousemove', e => {
-  const rect = canvas.getBoundingClientRect();
-  const mx = e.clientX - rect.left;
-  const W = canvas.offsetWidth;
-  const n = candles.length;
-  const barW = (W - PAD.left - PAD.right) / n;
-  const idx = Math.floor((mx - PAD.left) / barW);
-
-  if (idx >= 0 && idx < n) {
-    hoverIdx = idx;
-    const c = candles[idx];
-    document.getElementById('ttTime').textContent = formatTime(c.ts);
-    document.getElementById('ttO').textContent = c.open.toFixed(5);
-    document.getElementById('ttH').textContent = c.high.toFixed(5);
-    document.getElementById('ttL').textContent = c.low.toFixed(5);
-    document.getElementById('ttC').textContent = c.close.toFixed(5);
-    document.getElementById('ttC').style.color = c.close >= c.open ? '#10b981' : '#ef4444';
-    document.getElementById('ttV').textContent = c.vol.toLocaleString();
-
-    const b = boll[idx];
-    if (b) {
-      document.getElementById('ttBU').textContent = b.upper.toFixed(5);
-      document.getElementById('ttBM').textContent = b.mid.toFixed(5);
-      document.getElementById('ttBL').textContent = b.lower.toFixed(5);
-    } else {
-      document.getElementById('ttBU').textContent = '--';
-      document.getElementById('ttBM').textContent = '--';
-      document.getElementById('ttBL').textContent = '--';
-    }
-
-    const tx = mx + 16;
-    const ty = e.clientY - rect.top - 10;
-    const ttW = 210;
-    tooltip.style.left = (tx + ttW > W ? mx - ttW - 6 : tx) + 'px';
-    tooltip.style.top = Math.max(0, Math.min(ty, rect.height - tooltip.offsetHeight - 4)) + 'px';
-    tooltip.style.display = 'block';
-  } else {
-    hoverIdx = null;
-    tooltip.style.display = 'none';
-  }
-  drawChart();
-});
-
-canvas.addEventListener('mouseleave', () => {
-  hoverIdx = null;
-  tooltip.style.display = 'none';
-  drawChart();
-});
-
-window.addEventListener('resize', resize);
-
-// 初始化
-window.addEventListener('load', () => {
-  resize();
-  init();
-});
-
-// 刷新数据
-function refreshData() {
-  location.reload();
-}
-// 调试信息
-console.log('RAW_DATA 类型:', typeof RAW_DATA);
-if (typeof RAW_DATA !== 'undefined') {
-    console.log('RAW_DATA.code:', RAW_DATA.code);
-    console.log('RAW_DATA.data 长度:', RAW_DATA.data ? RAW_DATA.data.length : 'undefined');
-    console.log('最后一条数据:', RAW_DATA.data ? RAW_DATA.data[0] : '无');
-}
-</script>
-
-<!-- 调试用内联脚本 -->
-<script>
-(function() {
-    const log = document.getElementById('debug-log');
-    if (!log) return;
-    
-    let html = '<h3>调试信息</h3>';
-    html += '<p>RAW_DATA 类型: ' + (typeof RAW_DATA) + '</p>';
-    
-    if (typeof RAW_DATA !== 'undefined') {
-        html += '<p>code: ' + RAW_DATA.code + '</p>';
-        html += '<p>data 长度: ' + (RAW_DATA.data ? RAW_DATA.data.length : 'undefined') + '</p>';
-        if (RAW_DATA.data && RAW_DATA.data.length > 0) {
-            const last = RAW_DATA.data[0];
-            html += '<p>最新价格: ' + last[4] + '</p>';
-            html += '<p>时间: ' + new Date(parseInt(last[0])).toLocaleString('zh-CN') + '</p>';
-        }
-    } else {
-        html += '<p style="color:red;">RAW_DATA 未定义!</p>';
-    }
-    
-    log.innerHTML = html;
-})();
-</script>
-
-<div id="debug-log" style="position:fixed;top:10px;right:10px;background:#fff;padding:10px;border:2px solid red;z-index:9999;font-size:12px;max-width:300px;"></div>
+// ====== 闈欐€佹暟鎹姞杞?======
+let candles = [];   // 瀛樺偍瑙ｆ瀽鍚庣殑鏁版嵁
+let boll = [];      // 瀛樺偍甯冩灄甯︽暟鎹?
 
 </body>
 </html>
