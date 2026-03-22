@@ -1159,8 +1159,18 @@ window.addEventListener('resize', resize);
 
 // 初始化
 window.addEventListener('load', () => {
-  resize();
-  init();
+  try {
+    resize();
+  } catch(e) {
+    console.error('resize() 错误:', e);
+    document.getElementById('debug-log').innerHTML += '<p style="color:red;">resize() 错误: ' + e.message + '</p>';
+  }
+  try {
+    init();
+  } catch(e) {
+    console.error('init() 错误:', e);
+    document.getElementById('debug-log').innerHTML += '<p style="color:red;">init() 错误: ' + e.message + '</p>';
+  }
 });
 
 // 刷新数据
