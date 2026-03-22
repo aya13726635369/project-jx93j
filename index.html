@@ -703,7 +703,6 @@ footer {
 <script>
 // ====== 实时数据获取 ======
 const SYMBOL = 'DOGE-USDT-SWAP';
-const API_URL = 'https://www.okx.com/api/v5/market/candles';
 const REFRESH_INTERVAL = 60000; // 每分钟刷新一次
 
 let rawData = null; // 存储原始数据
@@ -711,10 +710,15 @@ let candles = [];   // 存储解析后的数据
 let boll = [];      // 存储布林带数据
 let isLoading = true;
 
-// 从OKX API获取数据
+// 获取API地址（生产环境用相对路径，本地开发用完整路径）
+const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+  ? 'http://localhost:3000'
+  : '';
+
+// 从API代理获取数据
 async function fetchKlineData() {
   try {
-    const url = `${API_URL}?instId=${SYMBOL}&bar=1H&limit=100`;
+    const url = `${API_BASE}/api/kline?symbol=${SYMBOL}&bar=1H&limit=100`;
     const resp = await fetch(url);
     const json = await resp.json();
     
@@ -724,10 +728,14 @@ async function fetchKlineData() {
       updateUI();
       isLoading = false;
       document.getElementById('loading').classList.add('hidden');
+      // 更新状态
+      document.querySelector('.status-badge span:last-child').textContent = '实时数据已连接';
     }
   } catch (e) {
     console.error('获取数据失败:', e);
-    document.getElementById('updateTime').textContent = '数据获取失败，请刷新页面';
+    document.getElementById('updateTime').textContent = '数据获取失败，请刷新页面重试';
+    document.querySelector('.status-badge span:last-child').textContent = '连接失败';
+    document.querySelector('.status-dot').style.background = '#ef4444';
   }
 }
 
