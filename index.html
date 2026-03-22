@@ -1,170 +1,1139 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>我的作品集</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DOGE/USDT 专业行情看板 | DOGE Dashboard Pro</title>
+<style>
+:root {
+  --bg-primary: #0a0e17;
+  --bg-secondary: #111827;
+  --bg-card: rgba(17, 24, 39, 0.85);
+  --border-color: rgba(75, 85, 99, 0.4);
+  --text-primary: #f9fafb;
+  --text-secondary: #9ca3af;
+  --accent-green: #10b981;
+  --accent-red: #ef4444;
+  --accent-purple: #8b5cf6;
+  --accent-yellow: #f59e0b;
+  --accent-blue: #3b82f6;
+  --glass-bg: rgba(17, 24, 39, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.08);
+}
 
-        body {
-            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
-            min-height: 100vh;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
-            background-attachment: fixed;
-            padding: 20px;
-        }
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
+body {
+  background: linear-gradient(135deg, #0a0e17 0%, #1a1f2e 50%, #0f1419 100%);
+  color: var(--text-primary);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
 
-        header {
-            text-align: center;
-            padding: 40px 0;
-            color: white;
-        }
+/* 背景装饰 */
+.bg-decoration {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+.bg-decoration::before {
+  content: '';
+  position: absolute;
+  top: -50%; left: -50%;
+  width: 200%; height: 200%;
+  background: radial-gradient(circle at 30% 20%, rgba(139, 92, 246, 0.08) 0%, transparent 50%),
+              radial-gradient(circle at 70% 80%, rgba(59, 130, 246, 0.06) 0%, transparent 50%);
+  animation: bgFloat 20s ease-in-out infinite;
+}
+@keyframes bgFloat {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  50% { transform: translate(-20px, 20px) rotate(2deg); }
+}
 
-        header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
-        }
+.container {
+  position: relative;
+  z-index: 1;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 24px;
+}
 
-        header p {
-            font-size: 1.1rem;
-            opacity: 0.9;
-        }
+/* Header */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
 
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 24px;
-            padding: 20px 0;
-        }
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
 
-        .card {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
+.logo {
+  width: 44px; height: 44px;
+  background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue));
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px; font-weight: bold;
+  box-shadow: 0 4px 20px rgba(139, 92, 246, 0.3);
+}
 
-        .card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-        }
+.brand-text h1 {
+  font-size: 22px; font-weight: 700;
+  background: linear-gradient(90deg, #fff, #a78bfa);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
 
-        .card-image {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-            background: linear-gradient(45deg, #f093fb, #f5576c);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 3rem;
-        }
+.brand-text p {
+  font-size: 12px; color: var(--text-secondary);
+  margin-top: 2px;
+}
 
-        .card-content {
-            padding: 20px;
-        }
+.status-badge {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 13px;
+}
 
-        .card-title {
-            font-size: 1.25rem;
-            color: #333;
-            margin-bottom: 10px;
-            font-weight: 600;
-        }
+.status-dot {
+  width: 8px; height: 8px;
+  background: var(--accent-green);
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
 
-        .card-desc {
-            color: #666;
-            font-size: 0.95rem;
-            line-height: 1.6;
-        }
+/* Price Hero Section */
+.price-hero {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 24px;
+  margin-bottom: 24px;
+  align-items: start;
+}
 
-        .card-link {
-            display: inline-block;
-            margin-top: 15px;
-            padding: 8px 20px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            text-decoration: none;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            transition: opacity 0.3s;
-        }
+@media (max-width: 768px) {
+  .price-hero { grid-template-columns: 1fr; }
+}
 
-        .card-link:hover {
-            opacity: 0.9;
-        }
+.price-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  padding: 28px 32px;
+  position: relative;
+  overflow: hidden;
+}
 
-        .empty-state {
-            text-align: center;
-            padding: 60px 20px;
-            color: white;
-        }
+.price-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+}
 
-        .empty-state h2 {
-            font-size: 1.5rem;
-            margin-bottom: 10px;
-        }
+.price-header {
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 16px;
+}
 
-        footer {
-            text-align: center;
-            padding: 30px;
-            color: white;
-            opacity: 0.8;
-        }
-    </style>
+.coin-icon {
+  width: 48px; height: 48px;
+  background: linear-gradient(135deg, #c9a227, #f0d878);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 24px;
+}
+
+.price-title {
+  font-size: 16px; color: var(--text-secondary);
+}
+
+.price-title strong {
+  color: var(--text-primary); font-size: 20px;
+}
+
+.price-main {
+  display: flex; align-items: baseline; gap: 16px;
+  margin-bottom: 8px;
+}
+
+.price-value {
+  font-size: 48px; font-weight: 800;
+  letter-spacing: -1px;
+  font-family: 'SF Mono', monospace;
+}
+
+.price-value.up { color: var(--accent-green); }
+.price-value.down { color: var(--accent-red); }
+
+.price-change {
+  display: flex; align-items: center; gap: 6px;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 14px; font-weight: 600;
+}
+
+.price-change.up {
+  background: rgba(16, 185, 129, 0.15);
+  color: var(--accent-green);
+}
+
+.price-change.down {
+  background: rgba(239, 68, 68, 0.15);
+  color: var(--accent-red);
+}
+
+.price-update {
+  font-size: 12px; color: var(--text-secondary);
+  margin-top: 12px;
+}
+
+/* Stats Grid */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.stat-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  padding: 16px 20px;
+  transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(139, 92, 246, 0.3);
+}
+
+.stat-label {
+  font-size: 12px; color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+}
+
+.stat-value {
+  font-size: 18px; font-weight: 700;
+  font-family: 'SF Mono', monospace;
+}
+
+.stat-value.boll-up { color: #a78bfa; }
+.stat-value.boll-mid { color: #fbbf24; }
+.stat-value.boll-down { color: #38bdf8; }
+
+/* Chart Section */
+.chart-section {
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  padding: 24px;
+  margin-bottom: 24px;
+}
+
+.chart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.chart-title {
+  font-size: 16px; font-weight: 600;
+  display: flex; align-items: center; gap: 10px;
+}
+
+.chart-title::before {
+  content: '';
+  width: 4px; height: 20px;
+  background: linear-gradient(180deg, var(--accent-purple), var(--accent-blue));
+  border-radius: 2px;
+}
+
+.timeframe-tabs {
+  display: flex; gap: 4px;
+  background: rgba(0,0,0,0.3);
+  padding: 4px;
+  border-radius: 10px;
+}
+
+.timeframe-tab {
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+}
+
+.timeframe-tab:hover { color: var(--text-primary); }
+.timeframe-tab.active {
+  background: rgba(139, 92, 246, 0.3);
+  color: var(--text-primary);
+}
+
+.chart-container {
+  position: relative;
+  height: 420px;
+  background: rgba(0,0,0,0.2);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+#klineCanvas {
+  width: 100%; height: 100%;
+  cursor: crosshair;
+}
+
+/* Tooltip */
+.tooltip {
+  position: absolute;
+  background: rgba(13, 17, 23, 0.98);
+  border: 1px solid rgba(75, 85, 99, 0.6);
+  border-radius: 12px;
+  padding: 16px;
+  font-size: 13px;
+  pointer-events: none;
+  display: none;
+  z-index: 100;
+  min-width: 220px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+}
+
+.tooltip-header {
+  font-size: 12px; color: var(--text-secondary);
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(75, 85, 99, 0.3);
+}
+
+.tooltip-row {
+  display: flex; justify-content: space-between;
+  margin: 6px 0;
+}
+
+.tooltip-key { color: var(--text-secondary); }
+.tooltip-val { font-weight: 600; font-family: monospace; }
+
+.tooltip-divider {
+  height: 1px;
+  background: rgba(75, 85, 99, 0.3);
+  margin: 10px 0;
+}
+
+/* Legend */
+.chart-legend {
+  display: flex; gap: 20px;
+  margin-top: 16px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.legend-item {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 12px; color: var(--text-secondary);
+}
+
+.legend-line {
+  width: 20px; height: 3px;
+  border-radius: 2px;
+}
+
+.legend-line.dashed {
+  background: linear-gradient(90deg, #fbbf24 50%, transparent 50%);
+  background-size: 8px 3px;
+}
+
+/* Analysis Section */
+.analysis-section {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.analysis-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  padding: 20px;
+}
+
+.analysis-card h3 {
+  font-size: 14px; font-weight: 600;
+  margin-bottom: 16px;
+  display: flex; align-items: center; gap: 8px;
+}
+
+.analysis-card h3::before {
+  content: '';
+  width: 8px; height: 8px;
+  border-radius: 50%;
+}
+
+.analysis-card.signal h3::before { background: var(--accent-green); }
+.analysis-card.tech h3::before { background: var(--accent-purple); }
+.analysis-card.risk h3::before { background: var(--accent-yellow); }
+
+.signal-item {
+  display: flex; justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(75, 85, 99, 0.2);
+}
+
+.signal-item:last-child { border-bottom: none; }
+
+.signal-label { font-size: 13px; color: var(--text-secondary); }
+
+.signal-value {
+  font-size: 14px; font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 6px;
+}
+
+.signal-value.buy {
+  background: rgba(16, 185, 129, 0.15);
+  color: var(--accent-green);
+}
+
+.signal-value.sell {
+  background: rgba(239, 68, 68, 0.15);
+  color: var(--accent-red);
+}
+
+.signal-value.neutral {
+  background: rgba(156, 163, 175, 0.15);
+  color: var(--text-secondary);
+}
+
+.tech-bar {
+  margin-bottom: 14px;
+}
+
+.tech-bar-header {
+  display: flex; justify-content: space-between;
+  font-size: 12px; margin-bottom: 6px;
+}
+
+.tech-bar-track {
+  height: 6px;
+  background: rgba(75, 85, 99, 0.3);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.tech-bar-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.5s ease;
+}
+
+.tech-bar-fill.green { background: linear-gradient(90deg, var(--accent-green), #34d399); }
+.tech-bar-fill.yellow { background: linear-gradient(90deg, var(--accent-yellow), #fbbf24); }
+.tech-bar-fill.red { background: linear-gradient(90deg, var(--accent-red), #f87171); }
+
+.risk-list {
+  list-style: none;
+}
+
+.risk-list li {
+  display: flex; align-items: flex-start;
+  gap: 10px;
+  padding: 10px 0;
+  font-size: 13px;
+  color: var(--text-secondary);
+  border-bottom: 1px solid rgba(75, 85, 99, 0.2);
+}
+
+.risk-list li:last-child { border-bottom: none; }
+
+.risk-list li::before {
+  content: '⚠';
+  color: var(--accent-yellow);
+  font-size: 14px;
+}
+
+/* Footer */
+footer {
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(75, 85, 99, 0.2);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.footer-links {
+  display: flex; gap: 20px;
+}
+
+.footer-links a {
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.footer-links a:hover { color: var(--text-primary); }
+
+/* Loading Animation */
+.loading-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: var(--bg-primary);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 1000;
+  transition: opacity 0.5s;
+}
+
+.loading-overlay.hidden {
+  opacity: 0; pointer-events: none;
+}
+
+.spinner {
+  width: 50px; height: 50px;
+  border: 3px solid rgba(139, 92, 246, 0.2);
+  border-top-color: var(--accent-purple);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+</style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>🎨 我的作品集</h1>
-            <p>这里展示我的网页、图片、视频等内容</p>
-        </header>
+<div class="bg-decoration"></div>
 
-        <div class="grid" id="contentGrid">
-            <!-- 内容卡片 -->
-            <div class="card">
-                <div class="card-image">🖼️</div>
-                <div class="card-content">
-                    <div class="card-title">示例图片</div>
-                    <div class="card-desc">这是一张示例图片，你可以替换成自己的内容</div>
-                    <a href="#" class="card-link">查看详情</a>
-                </div>
-            </div>
+<div class="loading-overlay" id="loading">
+  <div class="spinner"></div>
+</div>
 
-            <div class="card">
-                <div class="card-image">📄</div>
-                <div class="card-content">
-                    <div class="card-title">示例网页</div>
-                    <div class="card-desc">这是一个嵌入式网页示例</div>
-                    <a href="#" class="card-link">查看详情</a>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="card-image">🎬</div>
-                <div class="card-content">
-                    <div class="card-title">示例视频</div>
-                    <div class="card-desc">这里可以放视频内容</div>
-                    <a href="#" class="card-link">查看详情</a>
-                </div>
-            </div>
-        </div>
-
-        <footer>
-            <p>© 2026 我的作品集 · 由 WorkBuddy 生成</p>
-        </footer>
+<div class="container">
+  <header>
+    <div class="brand">
+      <div class="logo">D</div>
+      <div class="brand-text">
+        <h1>DOGE Dashboard Pro</h1>
+        <p>专业加密货币行情看板 | OKX 永续合约</p>
+      </div>
     </div>
+    <div class="status-badge">
+      <span class="status-dot"></span>
+      <span>实时数据连接中</span>
+    </div>
+  </header>
+
+  <section class="price-hero">
+    <div class="price-card">
+      <div class="price-header">
+        <div class="coin-icon">🐕</div>
+        <div class="price-title">
+          DOGE/USDT-SWAP <strong>·</strong> 1H
+        </div>
+      </div>
+      <div class="price-main">
+        <div class="price-value" id="mainPrice">--</div>
+        <div class="price-change" id="priceChange">
+          <span id="changeIcon">--</span>
+          <span id="changeValue">--%</span>
+        </div>
+      </div>
+      <div class="price-update" id="updateTime">数据更新中...</div>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-label">24H 最高</div>
+        <div class="stat-value" id="high24">--</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">24H 最低</div>
+        <div class="stat-value" id="low24">--</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">BOLL 上轨</div>
+        <div class="stat-value boll-up" id="bollUpper">--</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">BOLL 下轨</div>
+        <div class="stat-value boll-down" id="bollLower">--</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">成交量 (24H)</div>
+        <div class="stat-value" id="vol24">--</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">布林带宽度</div>
+        <div class="stat-value" id="bollWidth">--</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chart-section">
+    <div class="chart-header">
+      <div class="chart-title">K线图表 · 布林带分析</div>
+      <div class="timeframe-tabs">
+        <button class="timeframe-tab active">1H</button>
+        <button class="timeframe-tab">4H</button>
+        <button class="timeframe-tab">1D</button>
+      </div>
+    </div>
+    <div class="chart-container" id="chartWrap">
+      <canvas id="klineCanvas"></canvas>
+      <div class="tooltip" id="tooltip">
+        <div class="tooltip-header" id="ttTime"></div>
+        <div class="tooltip-row"><span class="tooltip-key">开盘</span><span class="tooltip-val" id="ttO"></span></div>
+        <div class="tooltip-row"><span class="tooltip-key">最高</span><span class="tooltip-val" id="ttH"></span></div>
+        <div class="tooltip-row"><span class="tooltip-key">最低</span><span class="tooltip-val" id="ttL"></span></div>
+        <div class="tooltip-row"><span class="tooltip-key">收盘</span><span class="tooltip-val" id="ttC"></span></div>
+        <div class="tooltip-row"><span class="tooltip-key">成交量</span><span class="tooltip-val" id="ttV"></span></div>
+        <div class="tooltip-divider"></div>
+        <div class="tooltip-row"><span class="tooltip-key" style="color:#a78bfa">BOLL Upper</span><span class="tooltip-val" id="ttBU" style="color:#a78bfa"></span></div>
+        <div class="tooltip-row"><span class="tooltip-key" style="color:#fbbf24">BOLL Mid</span><span class="tooltip-val" id="ttBM" style="color:#fbbf24"></span></div>
+        <div class="tooltip-row"><span class="tooltip-key" style="color:#38bdf8">BOLL Lower</span><span class="tooltip-val" id="ttBL" style="color:#38bdf8"></span></div>
+      </div>
+    </div>
+    <div class="chart-legend">
+      <div class="legend-item"><div class="legend-line" style="background:#a78bfa"></div>布林上轨</div>
+      <div class="legend-item"><div class="legend-line dashed" style="background:#fbbf24"></div>MA20 中轨</div>
+      <div class="legend-item"><div class="legend-line" style="background:#38bdf8"></div>布林下轨</div>
+      <div class="legend-item"><div class="legend-line" style="background:#10b981"></div>上涨</div>
+      <div class="legend-item"><div class="legend-line" style="background:#ef4444"></div>下跌</div>
+    </div>
+  </section>
+
+  <section class="analysis-section">
+    <div class="analysis-card signal">
+      <h3>交易信号</h3>
+      <div class="signal-item">
+        <span class="signal-label">布林带位置</span>
+        <span class="signal-value" id="bollPosition">--</span>
+      </div>
+      <div class="signal-item">
+        <span class="signal-label">趋势判断</span>
+        <span class="signal-value" id="trendSignal">--</span>
+      </div>
+      <div class="signal-item">
+        <span class="signal-label">操作建议</span>
+        <span class="signal-value" id="tradeAdvice">--</span>
+      </div>
+    </div>
+
+    <div class="analysis-card tech">
+      <h3>技术指标</h3>
+      <div class="tech-bar">
+        <div class="tech-bar-header">
+          <span>RSI (相对强弱)</span>
+          <span id="rsiValue">--</span>
+        </div>
+        <div class="tech-bar-track">
+          <div class="tech-bar-fill" id="rsiBar" style="width:0%"></div>
+        </div>
+      </div>
+      <div class="tech-bar">
+        <div class="tech-bar-header">
+          <span>布林带宽度</span>
+          <span id="bbWidthValue">--</span>
+        </div>
+        <div class="tech-bar-track">
+          <div class="tech-bar-fill" id="bbBar" style="width:0%"></div>
+        </div>
+      </div>
+      <div class="tech-bar">
+        <div class="tech-bar-header">
+          <span>成交量强度</span>
+          <span id="volValue">--</span>
+        </div>
+        <div class="tech-bar-track">
+          <div class="tech-bar-fill" id="volBar" style="width:0%"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="analysis-card risk">
+      <h3>风险提示</h3>
+      <ul class="risk-list">
+        <li>加密货币市场波动剧烈，投资需谨慎</li>
+        <li>技术指标仅供参考，不构成投资建议</li>
+        <li>请根据自身风险承受能力合理配置资产</li>
+        <li>建议设置止损止盈，控制仓位风险</li>
+      </ul>
+    </div>
+  </section>
+
+  <footer>
+    <div>数据来源: OKX API v5 | 本页面仅供学习参考</div>
+    <div class="footer-links">
+      <a href="https://www.okx.com" target="_blank">OKX官网</a>
+      <a href="#" onclick="location.reload()">刷新数据</a>
+    </div>
+  </footer>
+</div>
+
+<script>
+// 嵌入最新数据
+const RAW_DATA = {"code": "0", "msg": "", "data": [["1773756000000", "0.0989", "0.09975", "0.09825", "0.09948", "386316.45", "386316450", "38289864.2933", "0"], ["1773752400000", "0.09877", "0.09968", "0.09833", "0.0989", "495206.93", "495206930", "48996785.4734", "1"], ["1773748800000", "0.10008", "0.10017", "0.09864", "0.09878", "442199.48", "442199480", "43889055.6474", "1"], ["1773745200000", "0.10013", "0.10047", "0.0999", "0.10009", "148719.67", "148719670", "14906869.3821", "1"], ["1773741600000", "0.10069", "0.10072", "0.09986", "0.10013", "220401.72", "220401720", "22087398.2592", "1"], ["1773738000000", "0.1008", "0.10124", "0.10028", "0.1007", "206074.06", "206074060", "20749139.9275", "1"], ["1773734400000", "0.10051", "0.10139", "0.10035", "0.10079", "195919.88", "195919880", "19768839.4325", "1"], ["1773730800000", "0.10003", "0.1011", "0.09996", "0.10051", "185227.93", "185227930", "18643859.5294", "1"], ["1773727200000", "0.09994", "0.10054", "0.09953", "0.10003", "216265.13", "216265130", "21636737.8109", "1"], ["1773723600000", "0.10048", "0.10067", "0.0994", "0.09994", "324197.47", "324197470", "32420481.8655", "1"], ["1773720000000", "0.10121", "0.10162", "0.09979", "0.10048", "387804.93", "387804930", "39057984.0352", "1"], ["1773716400000", "0.10348", "0.10356", "0.10059", "0.10121", "528312.76", "528312760", "53787264.1452", "1"], ["1773712800000", "0.10319", "0.10443", "0.10218", "0.10348", "404123.63", "404123630", "41745377.3159", "1"], ["1773709200000", "0.10319", "0.10387", "0.10254", "0.10319", "315780.67", "315780670", "32609027.799", "1"], ["1773705600000", "0.10299", "0.10402", "0.1025", "0.10318", "330254.29", "330254290", "34081826.6129", "1"], ["1773702000000", "0.10321", "0.1037", "0.10218", "0.10298", "224986.27", "224986270", "23158592.9984", "1"], ["1773698400000", "0.10194", "0.1034", "0.10192", "0.10321", "269648.33", "269648330", "27758903.0608", "1"], ["1773694800000", "0.1015", "0.10265", "0.10116", "0.10195", "166047.81", "166047810", "16892875.7785", "1"], ["1773691200000", "0.10196", "0.10208", "0.10143", "0.1015", "106523.37", "106523370", "10834926.0483", "1"], ["1773687600000", "0.10172", "0.10294", "0.10143", "0.10196", "167220.58", "167220580", "17083394.6897", "1"], ["1773684000000", "0.1014", "0.10239", "0.10121", "0.10171", "186637.81", "186637810", "18999133.4026", "1"], ["1773680400000", "0.10112", "0.10166", "0.10085", "0.1014", "200411.96", "200411960", "20290074.7694", "1"], ["1773676800000", "0.10004", "0.10133", "0.09981", "0.10111", "404158.15", "404158150", "40593821.6836", "1"], ["1773673200000", "0.10307", "0.10328", "0.09991", "0.10003", "648350.71", "648350710", "65803884.2534", "1"], ["1773669600000", "0.1005", "0.10353", "0.09985", "0.10307", "920679.85", "920679850", "93461055.2945", "1"], ["1773666000000", "0.10006", "0.10168", "0.0999", "0.1005", "509641.36", "509641360", "51340755.9931", "1"], ["1773662400000", "0.09993", "0.10052", "0.0997", "0.10005", "266441.61", "266441610", "26672930.6972", "1"], ["1773658800000", "0.10066", "0.10069", "0.09936", "0.09993", "333309.28", "333309280", "33302807.4854", "1"], ["1773655200000", "0.10108", "0.10129", "0.1001", "0.10066", "291711.73", "291711730", "29341142.9464", "1"], ["1773651600000", "0.10035", "0.10136", "0.09975", "0.10109", "348292.11", "348292110", "35036278.6044", "1"], ["1773648000000", "0.10198", "0.10293", "0.10016", "0.10034", "603127.58", "603127580", "61103646.8904", "1"], ["1773644400000", "0.10164", "0.10268", "0.1016", "0.10198", "336856.48", "336856480", "34439775.86", "1"], ["1773640800000", "0.10154", "0.10257", "0.10118", "0.10164", "421107.43", "421107430", "42881344.8255", "1"], ["1773637200000", "0.10067", "0.10177", "0.10045", "0.10155", "356036.65", "356036650", "36023053.893", "1"], ["1773633600000", "0.09995", "0.10112", "0.09974", "0.10067", "393680.49", "393680490", "39485245.9064", "1"], ["1773630000000", "0.09808", "0.1014", "0.09775", "0.09994", "922010.15", "922010150", "92143493.8776", "1"], ["1773626400000", "0.09759", "0.09845", "0.09702", "0.09808", "289079.66", "289079660", "28231568.6571", "1"], ["1773622800000", "0.09792", "0.09814", "0.09726", "0.09759", "178683.62", "178683620", "17445920.7418", "1"], ["1773619200000", "0.09733", "0.09821", "0.09717", "0.09793", "283109.99", "283109990", "27673909.0247", "1"], ["1773615600000", "0.0973", "0.09804", "0.09656", "0.09733", "356330.82", "356330820", "34689449.1696", "1"], ["1773612000000", "0.09581", "0.09763", "0.0952", "0.0973", "419661.07", "419661070", "40542781.0035", "1"], ["1773608400000", "0.09532", "0.09599", "0.09498", "0.09581", "112350.88", "112350880", "10739324.8402", "1"], ["1773604800000", "0.09513", "0.09583", "0.09489", "0.09531", "95726.52", "95726520", "9127214.8783", "1"], ["1773601200000", "0.09475", "0.0953", "0.09465", "0.09513", "77483.38", "77483380", "7359835.9432", "1"], ["1773597600000", "0.09545", "0.09554", "0.09462", "0.09475", "127754.48", "127754480", "12157302.7622", "1"], ["1773594000000", "0.09464", "0.09577", "0.09459", "0.09544", "96593.08", "96593080", "9197260.5485", "1"], ["1773590400000", "0.09493", "0.09506", "0.09436", "0.09464", "191085.85", "191085850", "18098765.6993", "1"], ["1773586800000", "0.09554", "0.09554", "0.09487", "0.09492", "114256.67", "114256670", "10869685.6074", "1"]]};
+
+// 解析数据
+const candles = RAW_DATA.data.slice().reverse().map(d => ({
+  ts: parseInt(d[0]),
+  open: parseFloat(d[1]),
+  high: parseFloat(d[2]),
+  low: parseFloat(d[3]),
+  close: parseFloat(d[4]),
+  vol: parseFloat(d[5])
+}));
+
+// 计算布林带
+const BOLL_PERIOD = 20;
+const BOLL_MULT = 2;
+const boll = candles.map((_, i) => {
+  if (i < BOLL_PERIOD - 1) return null;
+  const slice = candles.slice(i - BOLL_PERIOD + 1, i + 1).map(c => c.close);
+  const mean = slice.reduce((a, b) => a + b, 0) / BOLL_PERIOD;
+  const std = Math.sqrt(slice.reduce((s, v) => s + (v - mean) ** 2, 0) / BOLL_PERIOD);
+  return { mid: mean, upper: mean + BOLL_MULT * std, lower: mean - BOLL_MULT * std };
+});
+
+// 计算RSI
+function calcRSI(data, period = 14) {
+  let gains = 0, losses = 0;
+  for (let i = 1; i <= period; i++) {
+    const change = data[i].close - data[i-1].close;
+    if (change > 0) gains += change;
+    else losses -= change;
+  }
+  let avgGain = gains / period;
+  let avgLoss = losses / period;
+  
+  for (let i = period + 1; i < data.length; i++) {
+    const change = data[i].close - data[i-1].close;
+    avgGain = (avgGain * (period - 1) + (change > 0 ? change : 0)) / period;
+    avgLoss = (avgLoss * (period - 1) + (change < 0 ? -change : 0)) / period;
+  }
+  const rs = avgGain / avgLoss;
+  return 100 - (100 / (1 + rs));
+}
+
+// 更新UI数据
+const last = candles[candles.length - 1];
+const first = candles[0];
+const high24 = Math.max(...candles.map(c => c.high));
+const low24 = Math.min(...candles.map(c => c.low));
+const totalVol = candles.reduce((s, c) => s + c.vol, 0);
+const change = ((last.close - first.open) / first.open * 100);
+const lastBoll = boll[boll.length - 1];
+const rsi = calcRSI(candles);
+
+// 更新价格卡片
+document.getElementById('mainPrice').textContent = '$' + last.close.toFixed(5);
+document.getElementById('mainPrice').className = 'price-value ' + (change >= 0 ? 'up' : 'down');
+document.getElementById('priceChange').className = 'price-change ' + (change >= 0 ? 'up' : 'down');
+document.getElementById('changeIcon').textContent = change >= 0 ? '▲' : '▼';
+document.getElementById('changeValue').textContent = (change >= 0 ? '+' : '') + change.toFixed(2) + '%';
+document.getElementById('updateTime').textContent = '更新时间: ' + new Date(last.ts).toLocaleString('zh-CN');
+
+// 更新统计卡片
+document.getElementById('high24').textContent = '$' + high24.toFixed(5);
+document.getElementById('low24').textContent = '$' + low24.toFixed(5);
+document.getElementById('bollUpper').textContent = lastBoll ? '$' + lastBoll.upper.toFixed(5) : '--';
+document.getElementById('bollLower').textContent = lastBoll ? '$' + lastBoll.lower.toFixed(5) : '--';
+document.getElementById('vol24').textContent = (totalVol / 1000000).toFixed(2) + 'M';
+const bollWidth = lastBoll ? ((lastBoll.upper - lastBoll.lower) / lastBoll.mid * 100).toFixed(2) + '%' : '--';
+document.getElementById('bollWidth').textContent = bollWidth;
+
+// 交易信号分析
+const pricePosition = lastBoll ? (last.close - lastBoll.lower) / (lastBoll.upper - lastBoll.lower) : 0.5;
+let bollPosText, bollPosClass;
+if (pricePosition > 0.8) { bollPosText = '超买区'; bollPosClass = 'sell'; }
+else if (pricePosition < 0.2) { bollPosText = '超卖区'; bollPosClass = 'buy'; }
+else { bollPosText = '中轨附近'; bollPosClass = 'neutral'; }
+document.getElementById('bollPosition').textContent = bollPosText;
+document.getElementById('bollPosition').className = 'signal-value ' + bollPosClass;
+
+let trendText, trendClass;
+if (last.close > lastBoll?.mid) { trendText = '偏多'; trendClass = 'buy'; }
+else if (last.close < lastBoll?.mid) { trendText = '偏空'; trendClass = 'sell'; }
+else { trendText = '震荡'; trendClass = 'neutral'; }
+document.getElementById('trendSignal').textContent = trendText;
+document.getElementById('trendSignal').className = 'signal-value ' + trendClass;
+
+let adviceText, adviceClass;
+if (pricePosition < 0.15) { adviceText = '关注买入'; adviceClass = 'buy'; }
+else if (pricePosition > 0.85) { adviceText = '关注卖出'; adviceClass = 'sell'; }
+else { adviceText = '观望'; adviceClass = 'neutral'; }
+document.getElementById('tradeAdvice').textContent = adviceText;
+document.getElementById('tradeAdvice').className = 'signal-value ' + adviceClass;
+
+// 技术指标进度条
+document.getElementById('rsiValue').textContent = rsi.toFixed(1);
+document.getElementById('rsiBar').style.width = rsi + '%';
+document.getElementById('rsiBar').className = 'tech-bar-fill ' + (rsi > 70 ? 'red' : rsi < 30 ? 'green' : 'yellow');
+
+document.getElementById('bbWidthValue').textContent = bollWidth;
+document.getElementById('bbBar').style.width = Math.min(parseFloat(bollWidth) * 5, 100) + '%';
+document.getElementById('bbBar').className = 'tech-bar-fill yellow';
+
+const avgVol = totalVol / candles.length;
+const recentVol = candles.slice(-5).reduce((s, c) => s + c.vol, 0) / 5;
+const volRatio = Math.min((recentVol / avgVol) * 50, 100);
+document.getElementById('volValue').textContent = (recentVol / avgVol).toFixed(2) + 'x';
+document.getElementById('volBar').style.width = volRatio + '%';
+document.getElementById('volBar').className = 'tech-bar-fill ' + (volRatio > 70 ? 'green' : 'yellow');
+
+// Canvas 图表绘制
+const canvas = document.getElementById('klineCanvas');
+const wrap = document.getElementById('chartWrap');
+const DPR = window.devicePixelRatio || 1;
+const PAD = { top: 20, right: 70, bottom: 80, left: 14 };
+const VOL_H_RATIO = 0.22;
+const CROSS_COLOR = '#58a6ff';
+
+function resize() {
+  const W = wrap.clientWidth;
+  const H = 420;
+  canvas.style.width = W + 'px';
+  canvas.style.height = H + 'px';
+  canvas.width = W * DPR;
+  canvas.height = H * DPR;
+  drawChart();
+}
+
+function formatTime(ts) {
+  const d = new Date(ts);
+  return String(d.getMonth()+1).padStart(2,'0') + '-' + 
+         String(d.getDate()).padStart(2,'0') + ' ' + 
+         String(d.getHours()).padStart(2,'0') + ':00';
+}
+
+function niceRange(min, max, ticks) {
+  const range = max - min;
+  const rough = range / ticks;
+  const mag = Math.pow(10, Math.floor(Math.log10(rough)));
+  const nice = [1,2,2.5,5,10].map(f=>f*mag).find(f=>f>=rough) || mag*10;
+  const lo = Math.floor(min / nice) * nice;
+  const hi = Math.ceil(max / nice) * nice;
+  const steps = [];
+  for (let v = lo; v <= hi + nice*0.001; v = +(v + nice).toFixed(10)) steps.push(+v.toFixed(10));
+  return steps;
+}
+
+let hoverIdx = null;
+
+function drawChart() {
+  const CW = canvas.width;
+  const CH = canvas.height;
+  const ctx = canvas.getContext('2d');
+  ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+  ctx.clearRect(0, 0, CW / DPR, CH / DPR);
+
+  const W = CW / DPR;
+  const H = CH / DPR;
+
+  const volH = (H - PAD.top - PAD.bottom) * VOL_H_RATIO;
+  const kH = (H - PAD.top - PAD.bottom) * (1 - VOL_H_RATIO) - 8;
+  const kTop = PAD.top;
+  const kBot = PAD.top + kH;
+  const volTop = kBot + 8;
+  const volBot = H - PAD.bottom;
+
+  const plotW = W - PAD.left - PAD.right;
+  const n = candles.length;
+  const barW = plotW / n;
+  const bodyW = Math.max(1, barW * 0.65);
+
+  const bollValues = boll.filter(Boolean);
+  const bollMax = bollValues.length ? Math.max(...bollValues.map(b => b.upper)) : -Infinity;
+  const bollMin = bollValues.length ? Math.min(...bollValues.map(b => b.lower)) : Infinity;
+  const priceMin = Math.min(Math.min(...candles.map(c=>c.low)), bollMin);
+  const priceMax = Math.max(Math.max(...candles.map(c=>c.high)), bollMax);
+  const pPad = (priceMax - priceMin) * 0.06;
+  const pLo = priceMin - pPad;
+  const pHi = priceMax + pPad;
+
+  const volMax = Math.max(...candles.map(c=>c.vol));
+
+  const px = i => PAD.left + (i + 0.5) * barW;
+  const py = v => kTop + (1 - (v - pLo)/(pHi - pLo)) * kH;
+  const vy = v => volBot - (v / volMax) * volH;
+
+  // 背景
+  ctx.fillStyle = '#0d1117';
+  ctx.fillRect(0, 0, W, H);
+
+  // 网格
+  const priceSteps = niceRange(pLo, pHi, 6);
+  ctx.strokeStyle = '#21262d';
+  ctx.lineWidth = 1;
+  ctx.setLineDash([3, 4]);
+  priceSteps.forEach(v => {
+    const y = py(v);
+    if (y < kTop - 2 || y > kBot + 2) return;
+    ctx.beginPath(); ctx.moveTo(PAD.left, y); ctx.lineTo(W - PAD.right, y); ctx.stroke();
+  });
+  ctx.setLineDash([]);
+
+  // 右侧价格轴
+  ctx.fillStyle = '#8b949e';
+  ctx.font = '11px Segoe UI, sans-serif';
+  ctx.textAlign = 'left';
+  priceSteps.forEach(v => {
+    const y = py(v);
+    if (y < kTop - 2 || y > kBot + 2) return;
+    ctx.fillText(v.toFixed(5), W - PAD.right + 4, y + 4);
+  });
+
+  // X轴时间标签
+  ctx.fillStyle = '#8b949e';
+  ctx.textAlign = 'center';
+  ctx.font = '10px Segoe UI, sans-serif';
+  const labelStep = Math.ceil(n / 8);
+  for (let i = 0; i < n; i += labelStep) {
+    const x = px(i);
+    ctx.fillText(formatTime(candles[i].ts), x, H - PAD.bottom + 14);
+  }
+
+  // 分割线
+  ctx.strokeStyle = '#30363d';
+  ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(PAD.left, kBot+4); ctx.lineTo(W-PAD.right, kBot+4); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(W-PAD.right, kTop); ctx.lineTo(W-PAD.right, volBot); ctx.stroke();
+
+  // 布林带填充
+  ctx.beginPath();
+  let bollStarted = false;
+  for (let i = 0; i < n; i++) {
+    if (!boll[i]) continue;
+    const x = px(i);
+    const y = py(boll[i].upper);
+    if (!bollStarted) { ctx.moveTo(x, y); bollStarted = true; }
+    else ctx.lineTo(x, y);
+  }
+  for (let i = n - 1; i >= 0; i--) {
+    if (!boll[i]) continue;
+    ctx.lineTo(px(i), py(boll[i].lower));
+  }
+  ctx.closePath();
+  ctx.fillStyle = 'rgba(139,92,246,0.08)';
+  ctx.fill();
+
+  // 上轨
+  ctx.beginPath();
+  bollStarted = false;
+  for (let i = 0; i < n; i++) {
+    if (!boll[i]) continue;
+    const x = px(i), y = py(boll[i].upper);
+    if (!bollStarted) { ctx.moveTo(x, y); bollStarted = true; } else ctx.lineTo(x, y);
+  }
+  ctx.strokeStyle = 'rgba(167,139,250,0.9)';
+  ctx.lineWidth = 1.5;
+  ctx.stroke();
+
+  // 中轨
+  ctx.beginPath();
+  bollStarted = false;
+  for (let i = 0; i < n; i++) {
+    if (!boll[i]) continue;
+    const x = px(i), y = py(boll[i].mid);
+    if (!bollStarted) { ctx.moveTo(x, y); bollStarted = true; } else ctx.lineTo(x, y);
+  }
+  ctx.strokeStyle = 'rgba(251,191,36,0.9)';
+  ctx.lineWidth = 1.5;
+  ctx.setLineDash([4, 3]);
+  ctx.stroke();
+  ctx.setLineDash([]);
+
+  // 下轨
+  ctx.beginPath();
+  bollStarted = false;
+  for (let i = 0; i < n; i++) {
+    if (!boll[i]) continue;
+    const x = px(i), y = py(boll[i].lower);
+    if (!bollStarted) { ctx.moveTo(x, y); bollStarted = true; } else ctx.lineTo(x, y);
+  }
+  ctx.strokeStyle = 'rgba(56,189,248,0.9)';
+  ctx.lineWidth = 1.5;
+  ctx.stroke();
+
+  // K线
+  candles.forEach((c, i) => {
+    const x = px(i);
+    const up = c.close >= c.open;
+    const col = up ? '#10b981' : '#ef4444';
+    const yO = py(c.open);
+    const yC = py(c.close);
+    const yH = py(c.high);
+    const yL = py(c.low);
+
+    ctx.strokeStyle = col;
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(x, yH);
+    ctx.lineTo(x, yL);
+    ctx.stroke();
+
+    const top = Math.min(yO, yC);
+    const height = Math.max(1, Math.abs(yC - yO));
+    const bx = x - bodyW / 2;
+
+    if (i === hoverIdx) {
+      ctx.fillStyle = up ? 'rgba(16,185,129,0.25)' : 'rgba(239,68,68,0.25)';
+      ctx.fillRect(bx - 2, kTop, bodyW + 4, kH);
+    }
+
+    ctx.fillStyle = col;
+    ctx.fillRect(bx, top, bodyW, height);
+    if (!up || height < 2) {
+      ctx.strokeStyle = col;
+      ctx.lineWidth = 1;
+      ctx.strokeRect(bx, top, bodyW, height);
+    }
+  });
+
+  // 成交量
+  candles.forEach((c, i) => {
+    const x = px(i);
+    const up = c.close >= c.open;
+    const col = up ? 'rgba(16,185,129,0.55)' : 'rgba(239,68,68,0.55)';
+    const top = vy(c.vol);
+    const h = volBot - top;
+    ctx.fillStyle = col;
+    ctx.fillRect(x - bodyW/2, top, bodyW, h);
+  });
+
+  // 悬停十字线
+  if (hoverIdx !== null) {
+    const c = candles[hoverIdx];
+    const x = px(hoverIdx);
+    const y = py(c.close);
+    ctx.strokeStyle = CROSS_COLOR;
+    ctx.lineWidth = 1;
+    ctx.setLineDash([4, 4]);
+    ctx.beginPath(); ctx.moveTo(x, kTop); ctx.lineTo(x, volBot); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(PAD.left, y); ctx.lineTo(W-PAD.right, y); ctx.stroke();
+    ctx.setLineDash([]);
+
+    ctx.fillStyle = CROSS_COLOR;
+    ctx.fillRect(W - PAD.right + 1, y - 9, PAD.right - 2, 18);
+    ctx.fillStyle = '#0d1117';
+    ctx.textAlign = 'left';
+    ctx.font = 'bold 11px Segoe UI, sans-serif';
+    ctx.fillText(c.close.toFixed(5), W - PAD.right + 4, y + 4);
+  }
+
+  // 当前价格线
+  const curY = py(last.close);
+  const upNow = last.close >= last.open;
+  ctx.strokeStyle = upNow ? '#10b981' : '#ef4444';
+  ctx.lineWidth = 1;
+  ctx.setLineDash([5, 3]);
+  ctx.beginPath(); ctx.moveTo(PAD.left, curY); ctx.lineTo(W-PAD.right, curY); ctx.stroke();
+  ctx.setLineDash([]);
+
+  ctx.fillStyle = upNow ? '#10b981' : '#ef4444';
+  ctx.fillRect(W - PAD.right + 1, curY - 9, PAD.right - 2, 18);
+  ctx.fillStyle = '#0d1117';
+  ctx.textAlign = 'left';
+  ctx.font = 'bold 11px Segoe UI, sans-serif';
+  ctx.fillText(last.close.toFixed(5), W - PAD.right + 4, curY + 4);
+
+  // Vol 标签
+  ctx.fillStyle = '#484f58';
+  ctx.font = '10px Segoe UI, sans-serif';
+  ctx.textAlign = 'left';
+  ctx.fillText('VOL', PAD.left + 2, volTop + 11);
+}
+
+// Tooltip
+const tooltip = document.getElementById('tooltip');
+canvas.addEventListener('mousemove', e => {
+  const rect = canvas.getBoundingClientRect();
+  const mx = e.clientX - rect.left;
+  const W = canvas.offsetWidth;
+  const n = candles.length;
+  const barW = (W - PAD.left - PAD.right) / n;
+  const idx = Math.floor((mx - PAD.left) / barW);
+
+  if (idx >= 0 && idx < n) {
+    hoverIdx = idx;
+    const c = candles[idx];
+    document.getElementById('ttTime').textContent = formatTime(c.ts);
+    document.getElementById('ttO').textContent = c.open.toFixed(5);
+    document.getElementById('ttH').textContent = c.high.toFixed(5);
+    document.getElementById('ttL').textContent = c.low.toFixed(5);
+    document.getElementById('ttC').textContent = c.close.toFixed(5);
+    document.getElementById('ttC').style.color = c.close >= c.open ? '#10b981' : '#ef4444';
+    document.getElementById('ttV').textContent = c.vol.toLocaleString();
+
+    const b = boll[idx];
+    if (b) {
+      document.getElementById('ttBU').textContent = b.upper.toFixed(5);
+      document.getElementById('ttBM').textContent = b.mid.toFixed(5);
+      document.getElementById('ttBL').textContent = b.lower.toFixed(5);
+    } else {
+      document.getElementById('ttBU').textContent = '--';
+      document.getElementById('ttBM').textContent = '--';
+      document.getElementById('ttBL').textContent = '--';
+    }
+
+    const tx = mx + 16;
+    const ty = e.clientY - rect.top - 10;
+    const ttW = 210;
+    tooltip.style.left = (tx + ttW > W ? mx - ttW - 6 : tx) + 'px';
+    tooltip.style.top = Math.max(0, Math.min(ty, rect.height - tooltip.offsetHeight - 4)) + 'px';
+    tooltip.style.display = 'block';
+  } else {
+    hoverIdx = null;
+    tooltip.style.display = 'none';
+  }
+  drawChart();
+});
+
+canvas.addEventListener('mouseleave', () => {
+  hoverIdx = null;
+  tooltip.style.display = 'none';
+  drawChart();
+});
+
+window.addEventListener('resize', resize);
+
+// 初始化
+window.addEventListener('load', () => {
+  resize();
+  setTimeout(() => {
+    document.getElementById('loading').classList.add('hidden');
+  }, 500);
+});
+</script>
 </body>
 </html>
